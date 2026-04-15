@@ -54,11 +54,13 @@ npm install
 Créer un fichier `.env`:
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/senprix
-JWT_SECRET=votre_secret_jwt
+MONGODB_URI=votre_uri_mongodb
+JWT_SECRET=votre_secret_jwt_super_securise
 JWT_EXPIRE=7d
 NODE_ENV=development
 ```
+
+> **Important**: Utilisez MongoDB Atlas ou une URI locale. Ne partagez JAMAIS vos identifiants.
 
 Pour populer la base de données avec des données initiales:
 ```bash
