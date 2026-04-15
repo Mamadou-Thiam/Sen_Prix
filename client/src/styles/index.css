@@ -1,0 +1,373 @@
+:root {
+  --color-green: #00853F;
+  --color-yellow: #FCD116;
+  --color-red: #E31B23;
+  --color-white: #FFFFFF;
+  --color-gray-100: #F7F7F7;
+  --color-gray-200: #E8E8E8;
+  --color-gray-300: #D4D4D4;
+  --color-gray-500: #8C8C8C;
+  --color-gray-700: #434343;
+  --color-gray-900: #262626;
+  --primary-color: #00853F;
+  --secondary-color: #FCD116;
+  --danger-color: #E31B23;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-gray-100);
+}
+
+.app-layout {
+  min-height: 100vh;
+}
+
+.logo {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.logo-green {
+  color: var(--color-green);
+}
+
+.logo-yellow {
+  color: var(--color-yellow);
+}
+
+.logo-red {
+  color: var(--color-red);
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-green) 0%, #006B2F 100%);
+}
+
+.auth-card {
+  background: var(--color-white);
+  border-radius: 8px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.auth-subtitle {
+  color: var(--color-gray-500);
+  margin-top: 8px;
+}
+
+.stat-card {
+  background: var(--color-white);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-green);
+}
+
+.stat-label {
+  color: var(--color-gray-500);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.page-subtitle {
+  color: var(--color-gray-500);
+  margin-top: 4px;
+}
+
+.senprix-btn-primary {
+  background-color: var(--color-green) !important;
+  border-color: var(--color-green) !important;
+}
+
+.senprix-btn-primary:hover {
+  background-color: #006B2F !important;
+  border-color: #006B2F !important;
+}
+
+.senprix-btn-danger {
+  background-color: var(--color-red) !important;
+  border-color: var(--color-red) !important;
+}
+
+.ant-menu-dark {
+  background: #001529;
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+  background-color: var(--color-green) !important;
+}
+
+.ant-table-thead > tr > th {
+  background-color: var(--color-gray-100) !important;
+  font-weight: 600;
+}
+
+.alert-high-price {
+  border-left: 4px solid var(--color-red);
+}
+
+.alert-suspicious {
+  border-left: 4px solid var(--color-yellow);
+}
+
+.alert-unread {
+  background-color: #FFF7E6;
+}
+
+.dashboard-charts {
+  margin-top: 24px;
+}
+
+.chart-container {
+  background: var(--color-white);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin-bottom: 24px;
+}
+
+.chart-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--color-gray-700);
+}
+
+.leaflet-container {
+  height: 400px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+@media (max-width: 768px) {
+  .auth-card {
+    margin: 16px;
+    padding: 24px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .ant-layout-sider {
+    position: fixed !important;
+    left: 0;
+    z-index: 100;
+    height: 100vh;
+  }
+
+  .ant-layout-sider-collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
+  }
+
+  .ant-layout {
+    margin-left: 0 !important;
+  }
+
+  .app-layout .ant-layout-header {
+    padding: 0 8px !important;
+  }
+
+  .app-layout .ant-layout-content {
+    margin: 8px !important;
+    padding: 16px !important;
+  }
+
+  .ant-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .ant-table {
+    font-size: 12px;
+  }
+
+  .chart-container {
+    padding: 12px;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .leaflet-container {
+    height: 250px;
+  }
+
+  .filter-form .ant-form-item {
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .filter-form .ant-select {
+    width: 100% !important;
+  }
+
+  .filter-form .ant-picker {
+    width: 100% !important;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+
+  .page-header .ant-btn {
+    width: 100%;
+  }
+
+  .ant-tabs-nav {
+    width: 100%;
+  }
+
+  .ant-tabs-tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px 4px;
+    font-size: 12px;
+  }
+
+  .ant-modal-body {
+    padding: 12px;
+  }
+
+  .ant-form-item-label > label {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .auth-card {
+    margin: 24px;
+    padding: 32px;
+  }
+
+  .ant-layout-sider {
+    width: 200px !important;
+    min-width: 200px !important;
+  }
+
+  .app-layout .ant-layout-content {
+    margin: 12px;
+    padding: 20px;
+  }
+
+  .filter-form .ant-form-item {
+    width: 48%;
+  }
+
+  .filter-form .ant-select {
+    min-width: 150px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .ant-layout-sider {
+    width: 240px !important;
+    min-width: 240px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    margin: 12px;
+    padding: 20px;
+  }
+
+  .auth-title {
+    font-size: 22px;
+  }
+
+  .app-layout .ant-layout-header {
+    padding: 0 4px !important;
+  }
+
+  .ant-space-align-center {
+    gap: 4px !important;
+  }
+
+  .ant-avatar {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .ant-badge {
+    font-size: 10px;
+  }
+
+  .stat-card {
+    padding: 8px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+  }
+}
