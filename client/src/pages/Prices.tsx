@@ -26,11 +26,13 @@ const Prices: React.FC = () => {
 
   const isAdmin = user?.role === 'admin' || user?.role === 'moderator';
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchProducts();
     fetchMarkets();
   }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (activeTab === 'all') {
       fetchPrices();
