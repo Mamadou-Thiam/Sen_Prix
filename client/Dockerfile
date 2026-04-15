@@ -1,7 +1,11 @@
 # Build stage
 FROM node:20-alpine AS builder
 
+ARG REACT_APP_API_URL
+
 WORKDIR /app
+
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
 
 COPY package*.json ./
 RUN npm ci
