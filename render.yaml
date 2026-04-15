@@ -1,8 +1,8 @@
 services:
   - type: web
-    name: senprix-server
+    name: senprix-api
     env: docker
-    dockerfile: server/Dockerfile
+    dockerfile: ./server/Dockerfile
     region: frankfurt
     envVars:
       - key: NODE_ENV
@@ -15,15 +15,14 @@ services:
         value: 7d
       - key: MONGODB_URI
         sync: false
-    autorename: senprix-api
 
   - type: web
-    name: senprix-client
+    name: senprix-web
     env: docker
-    dockerfile: client/Dockerfile
+    dockerfile: ./client/Dockerfile
     region: frankfurt
-    buildCommand: npm ci && npm run build --env REACT_APP_API_URL=$API_URL
+    buildCommand: npm ci && npm run build
     startCommand: nginx -g 'daemon off;'
     envVars:
       - key: REACT_APP_API_URL
-        value: https://senprix-server.onrender.com/api
+        value: https://senprix-api.onrender.com/api
