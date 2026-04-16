@@ -16,7 +16,7 @@ services:
       - key: MONGODB_URI
         sync: false
       - key: CLIENT_URL
-        value: https://sen-prix.onrender.com
+        value: https://sen-prix-web.onrender.com
 
   - type: web
     name: senprix-web
