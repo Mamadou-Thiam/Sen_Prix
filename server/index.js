@@ -21,6 +21,7 @@ const marketRoutes = require('./routes/markets');
 const alertRoutes = require('./routes/alerts');
 const userRoutes = require('./routes/users');
 const reportRoutes = require('./routes/reports');
+const priceRoutes = require('./routes/prices');
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.use('/api/markets', marketRoutes);
 app.use('/api/alerts', alertRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/prices', priceRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'SénPrix API est en ligne' });

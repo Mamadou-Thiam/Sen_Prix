@@ -49,6 +49,7 @@ export const priceService = {
   create: (data: any) => api.post('/prices', data),
   getStats: (params?: { product?: string; market?: string }) =>
     api.get('/prices/stats', { params }),
+  getDashboardStats: () => api.get('/prices/dashboard-stats'),
   getHistory: (productId: string, params?: { market?: string; days?: number }) =>
     api.get(`/prices/history/${productId}`, { params }),
   getPending: (params?: { page?: number; limit?: number }) =>
