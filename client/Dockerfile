@@ -3,7 +3,7 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-ENV REACT_APP_API_URL=https://senprix-api.onrender.com/api
+ENV REACT_APP_API_URL=https://sen-prix.onrender.com/api
 
 COPY package*.json ./
 RUN npm ci

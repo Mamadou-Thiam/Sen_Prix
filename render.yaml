@@ -27,4 +27,4 @@ services:
     startCommand: nginx -g 'daemon off;'
     envVars:
       - key: REACT_APP_API_URL
-        value: https://senprix-api.onrender.com/api
+        value: https://sen-prix.onrender.com/api
