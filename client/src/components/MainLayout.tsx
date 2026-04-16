@@ -181,24 +181,66 @@ const MainLayout: React.FC = () => {
 
       {isMobile && (
         <Drawer
-          title={
-            <div className="logo" style={{ justifyContent: 'center' }}>
-              <span className="logo-green">Sén</span>
-              <span className="logo-yellow">Prix</span>
-            </div>
-          }
           placement="left"
           onClose={() => setMobileDrawerOpen(false)}
           open={mobileDrawerOpen}
-          width={250}
+          width={280}
+          styles={{
+            header: { display: 'none' },
+            body: { padding: 0, background: '#001529' }
+          }}
         >
+          <div style={{
+            padding: '24px 20px',
+            background: 'linear-gradient(135deg, #00853F 0%, #00954A 100%)',
+            borderBottom: '1px solid rgba(255,255,255,0.1)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <Avatar size={48} style={{ backgroundColor: '#fff', color: '#00853F', fontSize: '18px', fontWeight: 'bold' }}>
+                {user?.firstName?.[0]}{user?.lastName?.[0]}
+              </Avatar>
+              <div>
+                <div style={{ color: '#fff', fontWeight: 600, fontSize: '16px' }}>
+                  {user?.firstName} {user?.lastName}
+                </div>
+                <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px' }}>
+                  {user?.email}
+                </div>
+              </div>
+            </div>
+          </div>
           <Menu
             theme="dark"
             mode="inline"
             selectedKeys={[location.pathname]}
             items={menuItems}
             onClick={handleMenuClick}
+            style={{ background: 'transparent', borderRight: 0 }}
           />
+          <div style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: '16px 20px',
+            borderTop: '1px solid rgba(255,255,255,0.1)',
+            background: '#001529'
+          }}>
+            <Button
+              type="text"
+              icon={<LogoutOutlined />}
+              onClick={handleLogout}
+              style={{
+                color: 'rgba(255,255,255,0.65)',
+                width: '100%',
+                justifyContent: 'flex-start',
+                height: 'auto',
+                padding: '8px 12px'
+              }}
+            >
+              Déconnexion
+            </Button>
+          </div>
         </Drawer>
       )}
 
