@@ -67,6 +67,8 @@ export const alertService = {
 };
 
 export const userService = {
+  updateProfile: (data: { firstName: string; lastName: string; phone?: string }) =>
+    api.put('/users/profile', data),
   getAll: (params?: { page?: number; limit?: number; role?: string }) =>
     api.get('/users', { params }),
   getById: (id: string) => api.get(`/users/${id}`),
@@ -78,7 +80,22 @@ export const userService = {
     api.put(`/users/${id}/market`, { marketId }),
   rateMerchant: (id: string, rating: number) =>
     api.post(`/users/${id}/rate`, { rating }),
-  getStats: () => api.get('/users/stats')
+  getStats: () => api.get('/users/stats'),
+  create: (data: { email: string; password: string; firstName: string; lastName: string; role: string; phone?: string }) =>
+    api.post('/users', data)
+};
+
+export const reportService = {
+  getAll: (params?: { page?: number; limit?: number; status?: string }) =>
+    api.get('/reports', { params }),
+  getById: (id: string) => api.get(`/reports/${id}`),
+  create: (data: { type: string; description?: string; product: string; market: string; price: number; quantity: string; reporterRole: string }) =>
+    api.post('/reports', data),
+  updateStatus: (id: string, status: string) =>
+    api.put(`/reports/${id}`, { status }),
+  markAsRead: (id: string) => api.put(`/reports/${id}/read`),
+  delete: (id: string) => api.delete(`/reports/${id}`),
+  getUnreadCount: () => api.get('/reports/unread-count')
 };
 
 export default api;

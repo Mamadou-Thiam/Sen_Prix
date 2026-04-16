@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Modal, Form, Select, message, Space, Tag, Typography, Avatar, Switch } from 'antd';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { Table, Button, Modal, Form, Select, Input, message, Space, Tag, Typography, Avatar, Switch } from 'antd';
+import { CheckOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { userService } from '../services/api';
 import { User } from '../types';
 
@@ -11,9 +11,11 @@ const Users: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [createModalVisible, setCreateModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 20, total: 0 });
   const [form] = Form.useForm();
+  const [createForm] = Form.useForm();
 
   useEffect(() => {
     fetchUsers();
@@ -79,6 +81,19 @@ const Users: React.FC = () => {
       }
     } catch (error: any) {
       message.error(error.response?.data?.message || 'Erreur');
+    }
+  };
+
+  const handleCreateOk = async () => {
+    try {
+      const values = await createForm.validateFields();
+      await userService.create(values);
+      message.success('Utilisateur créé avec succès');
+      setCreateModalVisible(false);
+      createForm.resetFields();
+      fetchUsers();
+    } catch (error: any) {
+      message.error(error.response?.data?.message || 'Erreur lors de la création');
     }
   };
 
@@ -168,9 +183,19 @@ const Users: React.FC = () => {
 
   return (
     <div>
-      <div className="page-header">
-        <Title level={2}>Utilisateurs</Title>
-        <Text type="secondary">Gérez les utilisateurs de la plateforme</Text>
+      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <Title level={2}>Utilisateurs</Title>
+          <Text type="secondary">Gérez les utilisateurs de la plateforme</Text>
+        </div>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => setCreateModalVisible(true)}
+          className="senprix-btn-primary"
+        >
+          Ajouter un utilisateur
+        </Button>
       </div>
 
       <Table
@@ -195,6 +220,77 @@ const Users: React.FC = () => {
         }}
       >
         <Form form={form} layout="vertical">
+          <Form.Item
+            name="role"
+            label="Rôle"
+            rules={[{ required: true, message: 'Veuillez sélectionner un rôle' }]}
+          >
+            <Select placeholder="Sélectionner un rôle">
+              <Option value="user">Citoyen</Option>
+              <Option value="merchant">Commerçant</Option>
+              <Option value="moderator">Modérateur</Option>
+              <Option value="admin">Administrateur</Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="Ajouter un utilisateur"
+        open={createModalVisible}
+        onOk={handleCreateOk}
+        onCancel={() => {
+          setCreateModalVisible(false);
+          createForm.resetFields();
+        }}
+        width={500}
+      >
+        <Form form={createForm} layout="vertical">
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[
+              { required: true, message: 'Veuillez entrer un email' },
+              { type: 'email', message: 'Email invalide' }
+            ]}
+          >
+            <Input placeholder="email@exemple.com" />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            label="Mot de passe"
+            rules={[
+              { required: true, message: 'Veuillez entrer un mot de passe' },
+              { min: 6, message: 'Le mot de passe doit contenir au moins 6 caractères' }
+            ]}
+          >
+            <Input.Password placeholder="Mot de passe (min. 6 caractères)" />
+          </Form.Item>
+
+          <Form.Item
+            name="firstName"
+            label="Prénom"
+            rules={[{ required: true, message: 'Veuillez entrer le prénom' }]}
+          >
+            <Input placeholder="Prénom" />
+          </Form.Item>
+
+          <Form.Item
+            name="lastName"
+            label="Nom"
+            rules={[{ required: true, message: 'Veuillez entrer le nom' }]}
+          >
+            <Input placeholder="Nom" />
+          </Form.Item>
+
+          <Form.Item
+            name="phone"
+            label="Téléphone"
+          >
+            <Input placeholder="+221 XX XXX XX XX" />
+          </Form.Item>
+
           <Form.Item
             name="role"
             label="Rôle"

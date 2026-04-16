@@ -1,5 +1,56 @@
 const User = require('../models/User');
 const Market = require('../models/Market');
+const Joi = require('joi');
+
+const createSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  role: Joi.string().valid('admin', 'moderator', 'user', 'merchant').required(),
+  phone: Joi.string()
+});
+
+exports.createUser = async (req, res, next) => {
+  try {
+    const { error } = createSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
+    const { email, password, firstName, lastName, role, phone } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Cet email est déjà utilisé' });
+    }
+
+    const user = await User.create({
+      email,
+      password,
+      firstName,
+      lastName,
+      role,
+      phone
+    });
+
+    res.status(201).json({
+      success: true,
+      user: {
+        _id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        phone: user.phone,
+        isVerified: user.isVerified,
+        createdAt: user.createdAt
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -154,18 +205,45 @@ exports.rateMerchant = async (req, res, next) => {
   }
 };
 
+const updateSchema = Joi.object({
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  phone: Joi.string().allow('', null).optional()
+});
+
+exports.updateProfile = async (req, res, next) => {
+  try {
+    const { error } = updateSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
+    const { firstName, lastName, phone } = req.body;
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { firstName, lastName, phone },
+      { new: true }
+    ).select('-password');
+
+    res.json({ success: true, user });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getStats = async (req, res, next) => {
   try {
     const User = require('../models/User');
     const Product = require('../models/Product');
     const Market = require('../models/Market');
-    const Price = require('../models/Price');
+    const Report = require('../models/Report');
 
-    const [userCount, productCount, marketCount, priceCount] = await Promise.all([
+    const [userCount, productCount, marketCount, reportCount] = await Promise.all([
       User.countDocuments(),
       Product.countDocuments(),
       Market.countDocuments(),
-      Price.countDocuments()
+      Report.countDocuments()
     ]);
 
     res.json({
@@ -174,7 +252,7 @@ exports.getStats = async (req, res, next) => {
         users: userCount,
         products: productCount,
         markets: marketCount,
-        prices: priceCount
+        reports: reportCount
       }
     });
   } catch (error) {

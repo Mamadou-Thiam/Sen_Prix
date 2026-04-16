@@ -7,14 +7,16 @@ const schema = {
     category: Joi.string().valid('riz', 'huile', 'sucre', 'farine', 'lait', 'gaz', 'autre').required(),
     description: Joi.string(),
     unit: Joi.string().valid('kg', 'litre', 'bundle', 'piece'),
-    image: Joi.string()
+    image: Joi.string(),
+    price: Joi.number().min(0).required()
   }),
   update: Joi.object({
     name: Joi.string(),
     category: Joi.string().valid('riz', 'huile', 'sucre', 'farine', 'lait', 'gaz', 'autre'),
     description: Joi.string(),
     unit: Joi.string().valid('kg', 'litre', 'bundle', 'piece'),
-    image: Joi.string()
+    image: Joi.string(),
+    price: Joi.number().min(0)
   })
 };
 

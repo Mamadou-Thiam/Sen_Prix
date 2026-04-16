@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Modal, Form, Input, Select, message, Space, Typography, Popconfirm, Tag } from 'antd';
+import { Table, Button, Modal, Form, Input, Select, InputNumber, message, Space, Typography, Popconfirm, Tag } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
@@ -109,6 +109,12 @@ const Products: React.FC = () => {
       dataIndex: 'unit',
       key: 'unit',
     },
+    {
+      title: 'Prix officiel (CFA)',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price: number) => price ? `${price.toLocaleString()} CFA` : '-'
+    },
     ...(user?.role === 'admin' ? [{
       title: 'Actions',
       key: 'actions',
@@ -135,7 +141,7 @@ const Products: React.FC = () => {
       <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <Title level={2}>Produits</Title>
-          <Text type="secondary">Gérez les produits de première nécessité</Text>
+          <Text type="secondary">Prix officiels des produits de première nécessité</Text>
         </div>
         {user?.role === 'admin' && (
           <Button
@@ -217,6 +223,20 @@ const Products: React.FC = () => {
               <Option value="bundle">Paquet</Option>
               <Option value="piece">Pièce</Option>
             </Select>
+          </Form.Item>
+
+          <Form.Item
+            name="price"
+            label="Prix officiel (CFA)"
+            rules={[{ required: true, message: 'Veuillez entrer le prix officiel' }]}
+          >
+            <InputNumber
+              style={{ width: '100%' }}
+              min={0}
+              step={10}
+              placeholder="Ex: 650"
+              addonAfter="CFA"
+            />
           </Form.Item>
         </Form>
       </Modal>

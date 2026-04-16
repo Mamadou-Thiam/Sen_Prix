@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Statistic, Typography, Spin, Table } from 'antd';
-import { ShoppingOutlined, ShopOutlined, DollarOutlined, UserOutlined } from '@ant-design/icons';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { ShoppingOutlined, ShopOutlined, FlagOutlined, UserOutlined } from '@ant-design/icons';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { userService, priceService } from '../services/api';
+import { userService, reportService } from '../services/api';
+import { Report } from '../types';
 
 const { Title, Text } = Typography;
 
@@ -12,30 +13,13 @@ interface Stats {
   users: number;
   products: number;
   markets: number;
-  prices: number;
+  reports: number;
 }
-
-interface PriceStat {
-  productName: string;
-  marketName: string;
-  avgPrice: number;
-  minPrice: number;
-  maxPrice: number;
-  count: number;
-}
-
-interface ChartData {
-  name: string;
-  value: number;
-}
-
-const COLORS = ['#00853F', '#FCD116', '#E31B23', '#2E7D32', '#F9A825', '#C62828'];
 
 const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<Stats>({ users: 0, products: 0, markets: 0, prices: 0 });
-  const [priceStats, setPriceStats] = useState<PriceStat[]>([]);
-  const [priceHistory, setPriceHistory] = useState<ChartData[]>([]);
+  const [stats, setStats] = useState<Stats>({ users: 0, products: 0, markets: 0, reports: 0 });
+  const [recentReports, setRecentReports] = useState<Report[]>([]);
   const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
@@ -45,22 +29,16 @@ const Dashboard: React.FC = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const [statsRes, priceStatsRes] = await Promise.all([
+      const [statsRes, reportsRes] = await Promise.all([
         userService.getStats(),
-        priceService.getStats()
+        reportService.getAll({ limit: 5 })
       ]);
 
       if (statsRes.data.success) {
         setStats(statsRes.data.stats);
       }
-      if (priceStatsRes.data.success) {
-        setPriceStats(priceStatsRes.data.stats.slice(0, 10));
-        
-        const historyData = priceStatsRes.data.stats.slice(0, 5).map((s: PriceStat) => ({
-          name: s.productName,
-          value: s.avgPrice
-        }));
-        setPriceHistory(historyData);
+      if (reportsRes.data.success) {
+        setRecentReports(reportsRes.data.reports);
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -69,44 +47,37 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const categoryData = priceStats.reduce((acc, curr) => {
-    const existing = acc.find((item: ChartData) => item.name === curr.productName);
-    if (existing) {
-      existing.value += curr.count;
-    } else {
-      acc.push({ name: curr.productName, value: curr.count });
-    }
-    return acc;
-  }, [] as ChartData[]);
-
   const columns = [
     {
       title: 'Produit',
-      dataIndex: 'productName',
-      key: 'productName',
+      dataIndex: ['product', 'name'],
+      key: 'product',
+      render: (_: any, record: Report) => record.product?.name || '-'
     },
     {
       title: 'Marché',
-      dataIndex: 'marketName',
-      key: 'marketName',
+      dataIndex: ['market', 'name'],
+      key: 'market',
+      render: (_: any, record: Report) => record.market?.name || '-'
     },
     {
-      title: 'Prix Moy.',
-      dataIndex: 'avgPrice',
-      key: 'avgPrice',
-      render: (value: number) => `${value.toFixed(2)} CFA`,
+      title: 'Prix',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price: number) => `${price?.toFixed(2)} CFA`
     },
     {
-      title: 'Min',
-      dataIndex: 'minPrice',
-      key: 'minPrice',
-      render: (value: number) => `${value.toFixed(2)} CFA`,
+      title: 'Signalé par',
+      key: 'reporter',
+      render: (_: any, record: Report) => (
+        <Text>{record.reporterRole === 'merchant' ? 'Commerçant' : 'Citoyen'}</Text>
+      )
     },
     {
-      title: 'Max',
-      dataIndex: 'maxPrice',
-      key: 'maxPrice',
-      render: (value: number) => `${value.toFixed(2)} CFA`,
+      title: 'Date',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date: string) => new Date(date).toLocaleDateString('fr-FR')
     },
   ];
 
@@ -159,63 +130,22 @@ const Dashboard: React.FC = () => {
         <Col xs={24} sm={12} lg={6}>
           <Card className="stat-card">
             <Statistic
-              title="Prix Enregistrés"
-              value={stats.prices}
-              prefix={<DollarOutlined style={{ color: '#00853F' }} />}
-              valueStyle={{ color: '#00853F' }}
+              title="Signalements"
+              value={stats.reports}
+              prefix={<FlagOutlined style={{ color: '#E31B23' }} />}
+              valueStyle={{ color: '#E31B23' }}
             />
           </Card>
         </Col>
       </Row>
 
-      <Row gutter={[16, 16]} style={{ marginTop: '24px' }}>
-        <Col xs={24} lg={12}>
-          <div className="chart-container">
-            <div className="chart-title">Prix Moyens par Produit</div>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={priceHistory}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value" fill="#00853F" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </Col>
-        <Col xs={24} lg={12}>
-          <div className="chart-container">
-            <div className="chart-title">Distribution des Prix</div>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={categoryData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {categoryData.map((entry: ChartData, index: number) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </Col>
-      </Row>
-
       <div className="chart-container" style={{ marginTop: '24px' }}>
-        <div className="chart-title">Derniers Prix Enregistrés</div>
+        <div className="chart-title">Derniers Signalements</div>
         <Table
-          dataSource={priceStats}
+          dataSource={recentReports}
           columns={columns}
-          rowKey={(record) => `${record.productName}-${record.marketName}`}
-          pagination={{ pageSize: 5 }}
+          rowKey="_id"
+          pagination={false}
           size="small"
         />
       </div>

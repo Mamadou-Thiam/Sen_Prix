@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Card, Form, Input, Button, Typography, message, Avatar, Tag, Rate } from 'antd';
 import { UserOutlined, MailOutlined, PhoneOutlined, ShopOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
+import { updateUser } from '../store';
+import { userService } from '../services/api';
 
 const { Title, Text } = Typography;
 
@@ -14,13 +16,16 @@ interface ProfileForm {
 
 const Profile: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   const handleSubmit = async (values: ProfileForm) => {
     setLoading(true);
     try {
-      message.success('Profil mis à jour (API non implémentée pour modification)');
+      const { data } = await userService.updateProfile(values);
+      dispatch(updateUser(data.user));
+      message.success('Profil mis à jour avec succès');
     } catch (error) {
       message.error('Erreur lors de la mise à jour');
     } finally {

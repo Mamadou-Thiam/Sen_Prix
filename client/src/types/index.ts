@@ -19,6 +19,7 @@ export interface Product {
   description?: string;
   unit: string;
   image?: string;
+  price?: number;
   createdAt: string;
 }
 
@@ -52,6 +53,21 @@ export interface Alert {
   product?: Product;
   market?: Market;
   message: string;
+  isRead: boolean;
+  createdAt: string;
+}
+
+export interface Report {
+  _id: string;
+  type: 'price_incorrect' | 'product_quality' | 'merchant_behavior' | 'fake_product' | 'other';
+  description?: string;
+  product: Product;
+  market: Market;
+  price: number;
+  quantity: string;
+  reportedBy: User;
+  reporterRole: 'user' | 'merchant';
+  status: 'pending' | 'verified' | 'rejected';
   isRead: boolean;
   createdAt: string;
 }

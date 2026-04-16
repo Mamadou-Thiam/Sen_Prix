@@ -6,13 +6,14 @@ import {
   DashboardOutlined,
   ShoppingOutlined,
   ShopOutlined,
-  DollarOutlined,
   BellOutlined,
   UserOutlined,
   TeamOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  FlagOutlined,
+  WarningOutlined,
 } from '@ant-design/icons';
 import { RootState } from '../store';
 import { logout, setUser } from '../store';
@@ -94,11 +95,11 @@ const MainLayout: React.FC = () => {
   };
 
   const menuItems = [
-    {
+    ...(user?.role === 'admin' ? [{
       key: '/dashboard',
       icon: <DashboardOutlined />,
       label: 'Dashboard',
-    },
+    }] : []),
     {
       key: '/products',
       icon: <ShoppingOutlined />,
@@ -109,11 +110,11 @@ const MainLayout: React.FC = () => {
       icon: <ShopOutlined />,
       label: 'Marchés',
     },
-    {
-      key: '/prices',
-      icon: <DollarOutlined />,
-      label: 'Prix',
-    },
+    ...(user?.role !== 'admin' ? [{
+      key: '/report-price',
+      icon: <WarningOutlined />,
+      label: 'Signaler un prix',
+    }] : []),
     {
       key: '/alerts',
       icon: <Badge count={unreadCount} size="small">
@@ -125,6 +126,11 @@ const MainLayout: React.FC = () => {
       key: '/users',
       icon: <TeamOutlined />,
       label: 'Utilisateurs',
+    },
+    {
+      key: '/reports',
+      icon: <FlagOutlined />,
+      label: 'Signalements',
     }] : []),
   ];
 

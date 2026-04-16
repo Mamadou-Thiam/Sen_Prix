@@ -97,7 +97,7 @@ const Markets: React.FC = () => {
       dataIndex: 'address',
       key: 'address',
     },
-    {
+    ...(user?.role === 'admin' || user?.role === 'moderator' ? [{
       title: 'Actions',
       key: 'actions',
       render: (_: any, record: Market) => (
@@ -115,7 +115,7 @@ const Markets: React.FC = () => {
           </Popconfirm>
         </Space>
       )
-    }
+    }] : [])
   ];
 
   return (
@@ -123,7 +123,11 @@ const Markets: React.FC = () => {
       <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <Title level={2}>Marchés</Title>
-          <Text type="secondary">Gérez les marchés du Sénégal</Text>
+          <Text type="secondary">
+            {user?.role === 'admin' || user?.role === 'moderator' 
+              ? 'Gérez les marchés du Sénégal' 
+              : 'Liste des marchés du Sénégal'}
+          </Text>
         </div>
         {(user?.role === 'admin' || user?.role === 'moderator') && (
           <Button

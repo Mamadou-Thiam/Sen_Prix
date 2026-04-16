@@ -33,6 +33,9 @@ const authSlice = createSlice({
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
+    },
+    updateUser: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
     }
   }
 });
@@ -73,7 +76,7 @@ const alertSlice = createSlice({
   }
 });
 
-export const { setUser, logout, setLoading } = authSlice.actions;
+export const { setUser, logout, setLoading, updateUser } = authSlice.actions;
 export const { setAlerts, setUnreadCount, addAlert, markAsRead } = alertSlice.actions;
 
 export const store = configureStore({

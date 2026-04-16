@@ -75,51 +75,54 @@
   }
   ```
 
-  ### Product
-  ```
-  {
-    _id: ObjectId,
-    name: String,
-    category: Enum ['riz', 'huile', 'sucre', 'farine', 'lait', 'gaz', 'autre'],
-    description: String,
-    unit: String (kg, litre, bundle),
-    image: String,
-    createdAt: Date
-  }
-  ```
+### Product
+```
+{
+  _id: ObjectId,
+  name: String,
+  category: Enum ['riz', 'huile', 'sucre', 'farine', 'lait', 'gaz', 'autre'],
+  description: String,
+  unit: String (kg, litre, bundle),
+  image: String,
+  price: Number (prix officiel fixé par l'État),
+  createdAt: Date
+}
+```
 
-  ### Market
-  ```
-  {
-    _id: ObjectId,
-    name: String,
-    city: String,
-    address: String,
-    location: {
-      type: 'Point',
-      coordinates: [longitude, latitude]
-    },
-    createdAt: Date
-  }
-  ```
+### Report
+```
+{
+  _id: ObjectId,
+  type: Enum ['price_incorrect', 'product_quality', 'merchant_behavior', 'fake_product', 'other'],
+  description: String,
+  product: ObjectId (ref: Product),
+  market: ObjectId (ref: Market),
+  price: Number,
+  quantity: String,
+  reportedBy: ObjectId (ref: User),
+  reporterRole: Enum ['user', 'merchant'],
+  status: Enum ['pending', 'verified', 'rejected'],
+  isRead: Boolean,
+  createdAt: Date
+}
+```
 
-  ### Price
-  ```
-  {
-    _id: ObjectId,
-    product: ObjectId (ref: Product),
-    market: ObjectId (ref: Market),
-    user: ObjectId (ref: User),
-    merchant: ObjectId (ref: User),
-    price: Number,
-    quantity: String,
-    date: Date,
-    isVerified: Boolean,
-    createdAt: Date
-  }
-  ```
+### Market
+```
+{
+  _id: ObjectId,
+  name: String,
+  city: String,
+  address: String,
+  location: {
+    type: 'Point',
+    coordinates: [longitude, latitude]
+  },
+  createdAt: Date
+}
+```
 
-  ### Alert
+### Alert
   ```
   {
     _id: ObjectId,
@@ -147,41 +150,44 @@
   - `PUT /api/products/:id` - Modifier produit (admin)
   - `DELETE /api/products/:id` - Supprimer produit (admin)
 
-  ### Markets
-  - `GET /api/markets` - Liste marchés
-  - `POST /api/markets` - Créer marché (admin/moderator)
-  - `PUT /api/markets/:id` - Modifier marché
-  - `DELETE /api/markets/:id` - Supprimer marché
+### Markets
+- `GET /api/markets` - Liste marchés
+- `POST /api/markets` - Créer marché (admin/moderator)
+- `PUT /api/markets/:id` - Modifier marché
+- `DELETE /api/markets/:id` - Supprimer marché
 
-  ### Prices
-  - `GET /api/prices` - Liste prix (filtres, pagination)
-  - `POST /api/prices` - Ajouter prix
-  - `GET /api/prices/stats` - Statistiques prix
-  - `GET /api/prices/history/:productId` - Historique prix
-
-  ### Alerts
+### Alerts
   - `GET /api/alerts` - Liste alertes
   - `PUT /api/alerts/:id/read` - Marquer lu
   - `DELETE /api/alerts/:id` - Supprimer alerte
 
-  ### Users
-  - `GET /api/users` - Liste utilisateurs (admin)
-  - `PUT /api/users/:id/verify` - Valider marchand (admin)
-  - `PUT /api/users/:id/role` - Modifier rôle (admin)
+### Users
+- `GET /api/users` - Liste utilisateurs (admin)
+- `POST /api/users` - Créer utilisateur (admin)
+- `PUT /api/users/:id/verify` - Valider marchand (admin)
+- `PUT /api/users/:id/role` - Modifier rôle (admin)
 
-  ---
+### Reports
+- `GET /api/reports` - Liste signalements (admin)
+- `POST /api/reports` - Créer signalement (utilisateur/commerçant)
+- `PUT /api/reports/:id` - Modifier statut (admin)
+- `DELETE /api/reports/:id` - Supprimer signalement (admin)
+
+---
 
   ## 7. Structure Frontend
 
-  ### Pages
-  - `/login` - Connexion
-  - `/register` - Inscription
-  - `/dashboard` - Tableau de bord
-  - `/products` - Gestion produits
-  - `/markets` - Gestion marchés
-  - `/prices` - Signalement prix
-  - `/alerts` - Alertes
-  - `/profile` - Profil utilisateur
+### Pages
+- `/login` - Connexion
+- `/register` - Inscription
+- `/dashboard` - Tableau de bord (admin)
+- `/products` - Gestion produits
+- `/markets` - Liste des marchés (modification: admin/modérateur)
+- `/report-price` - Signaler un prix incorrect (citoyen/commerçant)
+- `/alerts` - Alertes
+- `/profile` - Profil utilisateur
+- `/users` - Gestion utilisateurs (admin)
+- `/reports` - Signalements de prix (admin)
 
   ### Components
   - Layout (Sidebar, Navbar)
@@ -205,22 +211,24 @@
   - Comparaison par marché (chart barre)
   - Dernières alertes
 
-  ### Gestion Produits
-  - CRUD complet
-  - Catégories pré-définies
-  - Images
+### Gestion Produits
+- CRUD complet (admin)
+- Prix officiel fixé par l'État (visible par tous)
+- Catégories pré-définies
+- Images
 
   ### Gestion Marchés
   - CRUD complet
   - Carte interactive (Leaflet)
   - Géolocalisation
 
-  ### Signalement Prix
-  - Formulaire ajout prix
-  - Historique des prix
-  - Filtres par produit/marché/date
+### Signalement Prix
+- Formulaire ajout prix
+- Page dédiée pour signaler les prix incorrects (citoyen/commerçant)
+- Admin voit les signalements et peut les vérifier
+- Signalement vérifié crée une alerte
 
-  ### Système d'Alertes
+### Système d'Alertes
   - Détection automatique prix élevé
   - Variation suspecte (>20%)
   - Notification UI
