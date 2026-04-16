@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Form, Input, Select, InputNumber, Button, Typography, message, Row, Col, Divider } from 'antd';
-import { FlagOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Card, Form, Input, Select, InputNumber, Button, Typography, message, Row, Col, Divider, Table, Tag, Space } from 'antd';
+import { FlagOutlined, InfoCircleOutlined, CheckOutlined, CloseOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { reportService, productService, marketService } from '../services/api';
-import { Product, Market } from '../types';
+import { Product, Market, Report } from '../types';
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -16,10 +16,13 @@ const ReportPrice: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [markets, setMarkets] = useState<Market[]>([]);
+  const [myReports, setMyReports] = useState<Report[]>([]);
+  const [reportsLoading, setReportsLoading] = useState(false);
 
   useEffect(() => {
     fetchProducts();
     fetchMarkets();
+    fetchMyReports();
   }, []);
 
   const fetchProducts = async () => {
@@ -44,6 +47,20 @@ const ReportPrice: React.FC = () => {
     }
   };
 
+  const fetchMyReports = async () => {
+    try {
+      setReportsLoading(true);
+      const response = await reportService.getMyReports({ limit: 20 });
+      if (response.data.success) {
+        setMyReports(response.data.reports);
+      }
+    } catch (error) {
+      console.error('Error fetching my reports:', error);
+    } finally {
+      setReportsLoading(false);
+    }
+  };
+
   const handleSubmit = async (values: any) => {
     try {
       setLoading(true);
@@ -58,12 +75,76 @@ const ReportPrice: React.FC = () => {
       });
       message.success('Signalement envoyé avec succès. L\'administrateur l\'examinera.');
       form.resetFields();
+      fetchMyReports();
     } catch (error: any) {
       message.error(error.response?.data?.message || 'Erreur lors de l\'envoi du signalement');
     } finally {
       setLoading(false);
     }
   };
+
+  const getStatusTag = (status: string) => {
+    switch (status) {
+      case 'verified':
+        return <Tag color="green" icon={<CheckOutlined />}>Vérifié</Tag>;
+      case 'rejected':
+        return <Tag color="red" icon={<CloseOutlined />}>Rejeté</Tag>;
+      default:
+        return <Tag color="gold" icon={<ClockCircleOutlined />}>En attente</Tag>;
+    }
+  };
+
+  const getTypeTag = (type: string) => {
+    const typeConfig: Record<string, string> = {
+      price_incorrect: 'Prix incorrect',
+      product_quality: 'Qualité produit',
+      merchant_behavior: 'Comportement',
+      fake_product: 'Produit falsifié',
+      other: 'Autre'
+    };
+    return typeConfig[type] || type;
+  };
+
+  const myReportsColumns = [
+    {
+      title: 'Date',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date: string) => new Date(date).toLocaleDateString('fr-FR', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      })
+    },
+    {
+      title: 'Produit',
+      dataIndex: ['product', 'name'],
+      key: 'productName'
+    },
+    {
+      title: 'Marché',
+      dataIndex: ['market', 'name'],
+      key: 'marketName'
+    },
+    {
+      title: 'Prix',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price: number) => <Text strong>{price?.toFixed(2)} CFA</Text>
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+      render: (type: string) => getTypeTag(type)
+    },
+    {
+      title: 'Statut',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => getStatusTag(status)
+    }
+  ];
 
   return (
     <div>
@@ -222,6 +303,19 @@ const ReportPrice: React.FC = () => {
               </Row>
             </Form>
           </Card>
+
+          {myReports.length > 0 && (
+            <Card style={{ marginTop: '24px' }} title="Mes signalements">
+              <Table
+                columns={myReportsColumns}
+                dataSource={myReports}
+                rowKey="_id"
+                loading={reportsLoading}
+                pagination={{ pageSize: 5 }}
+                size="small"
+              />
+            </Card>
+          )}
         </Col>
       </Row>
     </div>

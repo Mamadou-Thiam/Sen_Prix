@@ -88,12 +88,15 @@ export const userService = {
 export const reportService = {
   getAll: (params?: { page?: number; limit?: number; status?: string }) =>
     api.get('/reports', { params }),
+  getMyReports: (params?: { page?: number; limit?: number; status?: string }) =>
+    api.get('/reports/my-reports', { params }),
   getById: (id: string) => api.get(`/reports/${id}`),
   create: (data: { type: string; description?: string; product: string; market: string; price: number; quantity: string; reporterRole: string }) =>
     api.post('/reports', data),
   updateStatus: (id: string, status: string) =>
     api.put(`/reports/${id}`, { status }),
   markAsRead: (id: string) => api.put(`/reports/${id}/read`),
+  markAllAsRead: () => api.put('/reports/read-all'),
   delete: (id: string) => api.delete(`/reports/${id}`),
   getUnreadCount: () => api.get('/reports/unread-count')
 };

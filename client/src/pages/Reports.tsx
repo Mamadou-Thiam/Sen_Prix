@@ -233,13 +233,32 @@ const Reports: React.FC = () => {
 
   return (
     <div>
-      <div className="page-header">
-        <Title level={2}>Signalements de Prix</Title>
-        <Text type="secondary">
-          <Badge count={unreadCount} offset={[10, 0]} size="small">
-            <span>{unreadCount} signalement{unreadCount !== 1 ? 's' : ''} non lu{unreadCount !== 1 ? 's' : ''}</span>
-          </Badge>
-        </Text>
+      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <Title level={2}>Signalements de Prix</Title>
+          <Text type="secondary">
+            <Badge count={unreadCount} offset={[10, 0]} size="small">
+              <span>{unreadCount} signalement{unreadCount !== 1 ? 's' : ''} non lu{unreadCount !== 1 ? 's' : ''}</span>
+            </Badge>
+          </Text>
+        </div>
+        {unreadCount > 0 && (
+          <Button
+            icon={<CheckOutlined />}
+            onClick={async () => {
+              try {
+                await reportService.markAllAsRead();
+                fetchReports();
+                fetchUnreadCount();
+                message.success('Tous les signalements marqués comme lus');
+              } catch (error) {
+                message.error('Erreur');
+              }
+            }}
+          >
+            Tout marquer comme lu
+          </Button>
+        )}
       </div>
 
       <Row gutter={[16, 16]} style={{ marginBottom: '16px' }}>

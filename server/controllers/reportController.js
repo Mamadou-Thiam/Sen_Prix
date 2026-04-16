@@ -154,3 +154,45 @@ exports.getUnreadCount = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getMyReports = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 20, status } = req.query;
+    const query = { reportedBy: req.user._id };
+    
+    if (status) {
+      query.status = status;
+    }
+
+    const reports = await Report.find(query)
+      .populate('product', 'name category')
+      .populate('market', 'name city')
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .sort({ createdAt: -1 });
+
+    const count = await Report.countDocuments(query);
+
+    res.json({
+      success: true,
+      reports,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      total: count
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.markAllAsRead = async (req, res, next) => {
+  try {
+    await Report.updateMany(
+      { isRead: false },
+      { isRead: true }
+    );
+    res.json({ success: true, message: 'Tous les signalements marqués comme lus' });
+  } catch (error) {
+    next(error);
+  }
+};

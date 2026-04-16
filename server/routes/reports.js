@@ -6,8 +6,10 @@ const {
   createReport,
   updateReportStatus,
   markAsRead,
+  markAllAsRead,
   deleteReport,
-  getUnreadCount
+  getUnreadCount,
+  getMyReports
 } = require('../controllers/reportController');
 const { protect, authorize } = require('../middleware/auth');
 
@@ -17,11 +19,14 @@ router.route('/')
   .get(protect, authorize('admin'), getReports)
   .post(protect, createReport);
 
+router.get('/my-reports', protect, getMyReports);
+
 router.route('/:id')
   .get(protect, authorize('admin'), getReport)
   .put(protect, authorize('admin'), updateReportStatus)
   .delete(protect, authorize('admin'), deleteReport);
 
 router.put('/:id/read', protect, authorize('admin'), markAsRead);
+router.put('/read-all', protect, authorize('admin'), markAllAsRead);
 
 module.exports = router;
