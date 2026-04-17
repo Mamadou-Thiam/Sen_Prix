@@ -29,6 +29,7 @@ body {
 
 .app-layout {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .logo {
