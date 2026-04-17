@@ -117,9 +117,26 @@ const MainLayout: React.FC = () => {
     }] : []),
     {
       key: '/alerts',
-      icon: <Badge count={unreadCount} size="small">
+      icon: <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
         <BellOutlined />
-      </Badge>,
+        {unreadCount > 0 && (
+          <span style={{
+            position: 'absolute',
+            top: -8,
+            right: -8,
+            background: '#E31B23',
+            color: '#fff',
+            borderRadius: '10px',
+            padding: '0 6px',
+            fontSize: '10px',
+            minWidth: '18px',
+            textAlign: 'center',
+            lineHeight: '18px'
+          }}>
+            {unreadCount > 99 ? '99+' : unreadCount}
+          </span>
+        )}
+      </div>,
       label: 'Alertes',
     },
     ...(user?.role === 'admin' ? [{
@@ -262,13 +279,29 @@ const MainLayout: React.FC = () => {
             />
           )}
           <Space>
-            <Badge count={unreadCount} size="small">
-              <Button
-                type="text"
-                icon={<BellOutlined />}
-                onClick={() => navigate('/alerts')}
-              />
-            </Badge>
+            <div 
+              onClick={() => navigate('/alerts')}
+              style={{ display: 'flex', alignItems: 'center', position: 'relative', cursor: 'pointer' }}
+            >
+              <BellOutlined style={{ fontSize: '18px' }} />
+              {unreadCount > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: -6,
+                  right: -8,
+                  background: '#E31B23',
+                  color: '#fff',
+                  borderRadius: '10px',
+                  padding: '0 6px',
+                  fontSize: '10px',
+                  minWidth: '18px',
+                  textAlign: 'center',
+                  lineHeight: '18px'
+                }}>
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
+            </div>
             <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
               <Space style={{ cursor: 'pointer' }}>
                 <Avatar style={{ backgroundColor: '#00853F' }}>
