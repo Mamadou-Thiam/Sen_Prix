@@ -166,10 +166,7 @@ const Reports: React.FC = () => {
       title: 'Signalé par',
       key: 'reporter',
       render: (_: any, record: Report) => (
-        <Space>
-          {getReporterRoleTag(record.reporterRole)}
-          <Text>{record.reportedBy?.firstName} {record.reportedBy?.lastName}</Text>
-        </Space>
+        <Text>{record.reportedBy?.firstName} {record.reportedBy?.lastName}</Text>
       )
     },
     {
