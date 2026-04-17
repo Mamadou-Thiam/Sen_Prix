@@ -311,6 +311,11 @@ body {
     min-width: 200px !important;
   }
 
+  .ant-layout-sider-collapsed {
+    width: 80px !important;
+    min-width: 80px !important;
+  }
+
   .app-layout .ant-layout-content {
     margin: 12px;
     padding: 20px;
@@ -329,6 +334,12 @@ body {
   .ant-layout-sider {
     width: 240px !important;
     min-width: 240px !important;
+    transition: width 0.2s;
+  }
+
+  .ant-layout-sider-collapsed {
+    width: 80px !important;
+    min-width: 80px !important;
   }
 }
 
