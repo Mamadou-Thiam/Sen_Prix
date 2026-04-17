@@ -9,15 +9,20 @@ exports.getAlerts = async (req, res, next) => {
       query.isRead = false;
     }
 
+    if (req.user.role !== 'admin') {
+      query.user = req.user._id;
+    }
+
     const alerts = await Alert.find(query)
       .populate('product', 'name')
       .populate('market', 'name city')
+      .populate('user', 'firstName lastName')
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .sort({ createdAt: -1 });
 
     const count = await Alert.countDocuments(query);
-    const unreadCount = await Alert.countDocuments({ isRead: false });
+    const unreadCount = await Alert.countDocuments({ ...query, isRead: false });
 
     res.json({
       success: true,
@@ -34,8 +39,13 @@ exports.getAlerts = async (req, res, next) => {
 
 exports.markAsRead = async (req, res, next) => {
   try {
-    const alert = await Alert.findByIdAndUpdate(
-      req.params.id,
+    const query = { _id: req.params.id };
+    if (req.user.role !== 'admin') {
+      query.user = req.user._id;
+    }
+
+    const alert = await Alert.findOneAndUpdate(
+      query,
       { isRead: true },
       { new: true }
     );
@@ -52,8 +62,13 @@ exports.markAsRead = async (req, res, next) => {
 
 exports.markAllAsRead = async (req, res, next) => {
   try {
+    const query = { isRead: false };
+    if (req.user.role !== 'admin') {
+      query.user = req.user._id;
+    }
+
     await Alert.updateMany(
-      { isRead: false },
+      query,
       { isRead: true }
     );
 

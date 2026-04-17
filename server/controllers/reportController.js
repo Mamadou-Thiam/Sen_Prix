@@ -102,6 +102,7 @@ exports.updateReportStatus = async (req, res, next) => {
     if (req.body.status === 'verified') {
       await Alert.create({
         type: 'high_price',
+        user: req.user._id,
         product: report.product._id,
         market: report.market._id,
         message: `Prix signalé: ${report.product.name} au marché ${report.market.name} à ${report.price} CFA (signalé par ${report.reportedBy.firstName} ${report.reportedBy.lastName})`

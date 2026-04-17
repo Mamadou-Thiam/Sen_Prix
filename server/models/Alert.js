@@ -6,6 +6,10 @@ const alertSchema = new mongoose.Schema({
     enum: ['high_price', 'suspicious_variation', 'penurie'],
     required: [true, 'Le type d\'alerte est requis']
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   product: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product'

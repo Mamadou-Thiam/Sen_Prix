@@ -50,6 +50,7 @@ export interface Price {
 export interface Alert {
   _id: string;
   type: 'high_price' | 'suspicious_variation';
+  user?: User;
   product?: Product;
   market?: Market;
   message: string;
