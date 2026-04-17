@@ -313,8 +313,8 @@ body {
   }
 
   .ant-layout-sider-collapsed {
-    width: 100px !important;
-    min-width: 100px !important;
+    width: 80px !important;
+    min-width: 80px !important;
   }
 
   .app-layout .ant-layout-content {
@@ -339,8 +339,8 @@ body {
   }
 
   .ant-layout-sider-collapsed {
-    width: 100px !important;
-    min-width: 100px !important;
+    width: 80px !important;
+    min-width: 80px !important;
   }
 
   .ant-layout-sider-collapsed .ant-badge {
