@@ -115,7 +115,7 @@ const MainLayout: React.FC = () => {
       icon: <WarningOutlined />,
       label: 'Signaler un prix',
     }] : []),
-    {
+    ...(!user?.role || user?.role !== 'admin' ? [{
       key: '/alerts',
       icon: <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginRight: '8px' }}>
         <BellOutlined />
@@ -138,7 +138,7 @@ const MainLayout: React.FC = () => {
         )}
       </div>,
       label: 'Alertes',
-    },
+    }] : []),
     ...(user?.role === 'admin' ? [{
       key: '/users',
       icon: <TeamOutlined />,
@@ -279,29 +279,31 @@ const MainLayout: React.FC = () => {
             />
           )}
           <Space>
-            <div 
-              onClick={() => navigate('/alerts')}
-              style={{ display: 'flex', alignItems: 'center', position: 'relative', cursor: 'pointer', marginRight: '8px' }}
-            >
-              <BellOutlined style={{ fontSize: '18px' }} />
-              {unreadCount > 0 && (
-                <span style={{
-                  position: 'absolute',
-                  top: -6,
-                  right: -12,
-                  background: '#E31B23',
-                  color: '#fff',
-                  borderRadius: '10px',
-                  padding: '0 6px',
-                  fontSize: '10px',
-                  minWidth: '18px',
-                  textAlign: 'center',
-                  lineHeight: '18px'
-                }}>
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </span>
-              )}
-            </div>
+            {user?.role !== 'admin' && (
+              <div 
+                onClick={() => navigate('/alerts')}
+                style={{ display: 'flex', alignItems: 'center', position: 'relative', cursor: 'pointer', marginRight: '8px' }}
+              >
+                <BellOutlined style={{ fontSize: '18px' }} />
+                {unreadCount > 0 && (
+                  <span style={{
+                    position: 'absolute',
+                    top: -6,
+                    right: -12,
+                    background: '#E31B23',
+                    color: '#fff',
+                    borderRadius: '10px',
+                    padding: '0 6px',
+                    fontSize: '10px',
+                    minWidth: '18px',
+                    textAlign: 'center',
+                    lineHeight: '18px'
+                  }}>
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
+              </div>
+            )}
             <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
               <Space style={{ cursor: 'pointer' }}>
                 <Avatar style={{ backgroundColor: '#00853F' }}>
