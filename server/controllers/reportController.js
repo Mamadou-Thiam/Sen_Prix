@@ -109,6 +109,20 @@ exports.updateReportStatus = async (req, res, next) => {
       });
     }
 
+    if (req.body.status === 'verified' || req.body.status === 'rejected') {
+      const statusMessage = req.body.status === 'verified' 
+        ? 'Votre signalement a été vérifié et confirmé' 
+        : 'Votre signalement a été rejeté';
+      
+      await Alert.create({
+        type: req.body.status === 'verified' ? 'high_price' : 'suspicious_variation',
+        user: report.reportedBy._id,
+        product: report.product._id,
+        market: report.market._id,
+        message: `${statusMessage}: ${report.product.name} au marché ${report.market.name} à ${report.price} CFA`
+      });
+    }
+
     report.status = req.body.status;
     await report.save();
 

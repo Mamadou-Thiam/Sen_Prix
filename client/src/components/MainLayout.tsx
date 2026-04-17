@@ -87,6 +87,8 @@ const MainLayout: React.FC = () => {
       }
     };
     fetchUnreadCount();
+    const interval = setInterval(fetchUnreadCount, 30000);
+    return () => clearInterval(interval);
   }, [dispatch]);
 
   const handleLogout = () => {
