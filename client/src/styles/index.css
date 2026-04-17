@@ -341,6 +341,23 @@ body {
   .ant-layout-sider-collapsed {
     width: 80px !important;
     min-width: 80px !important;
+    overflow: visible !important;
+  }
+
+  .ant-layout-sider-collapsed .ant-menu-item {
+    overflow: visible;
+  }
+
+  .ant-layout-sider-collapsed .ant-menu-item .ant-badge {
+    overflow: visible;
+  }
+
+  .ant-layout-sider-collapsed .ant-menu-item .ant-menu-item-only-child {
+    overflow: visible;
+  }
+
+  .ant-layout-sider-collapsed .ant-menu-item > div {
+    overflow: visible !important;
   }
 }
 
