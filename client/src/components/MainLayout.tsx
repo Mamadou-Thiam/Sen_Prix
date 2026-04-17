@@ -156,6 +156,7 @@ const MainLayout: React.FC = () => {
           trigger={null}
           collapsible
           collapsed={collapsed}
+          collapsedWidth={80}
           theme="dark"
           width={240}
           className={collapsed ? 'ant-layout-sider-collapsed' : ''}
