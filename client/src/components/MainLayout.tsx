@@ -117,13 +117,13 @@ const MainLayout: React.FC = () => {
     }] : []),
     {
       key: '/alerts',
-      icon: <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+      icon: <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginRight: '8px' }}>
         <BellOutlined />
         {unreadCount > 0 && (
           <span style={{
             position: 'absolute',
             top: -8,
-            right: -8,
+            right: -12,
             background: '#E31B23',
             color: '#fff',
             borderRadius: '10px',
@@ -281,14 +281,14 @@ const MainLayout: React.FC = () => {
           <Space>
             <div 
               onClick={() => navigate('/alerts')}
-              style={{ display: 'flex', alignItems: 'center', position: 'relative', cursor: 'pointer' }}
+              style={{ display: 'flex', alignItems: 'center', position: 'relative', cursor: 'pointer', marginRight: '8px' }}
             >
               <BellOutlined style={{ fontSize: '18px' }} />
               {unreadCount > 0 && (
                 <span style={{
                   position: 'absolute',
                   top: -6,
-                  right: -8,
+                  right: -12,
                   background: '#E31B23',
                   color: '#fff',
                   borderRadius: '10px',
