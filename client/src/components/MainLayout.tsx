@@ -117,7 +117,7 @@ const MainLayout: React.FC = () => {
     }] : []),
     {
       key: '/alerts',
-      icon: <Badge count={unreadCount} size="small">
+      icon: <Badge count={unreadCount} size="small" style={{ overflow: 'hidden' }}>
         <BellOutlined />
       </Badge>,
       label: 'Alertes',
@@ -156,6 +156,7 @@ const MainLayout: React.FC = () => {
           trigger={null}
           collapsible
           collapsed={collapsed}
+          collapsedWidth={80}
           theme="dark"
           width={240}
           className={collapsed ? 'ant-layout-sider-collapsed' : ''}

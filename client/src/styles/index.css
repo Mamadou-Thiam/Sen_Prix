@@ -342,6 +342,17 @@ body {
     width: 80px !important;
     min-width: 80px !important;
   }
+
+  .ant-layout-sider-collapsed .ant-badge {
+    overflow: visible;
+  }
+
+  .ant-layout-sider-collapsed .ant-badge-count {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    transform: scale(0.8);
+  }
 }
 
 @media (max-width: 480px) {
