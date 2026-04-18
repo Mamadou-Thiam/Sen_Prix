@@ -97,7 +97,7 @@ const Markets: React.FC = () => {
       dataIndex: 'address',
       key: 'address',
     },
-    ...(user?.role === 'admin' || user?.role === 'merchant' ? [{
+    ...(user?.role === 'admin' ? [{
       title: 'Actions',
       key: 'actions',
       render: (_: any, record: Market) => (
@@ -124,12 +124,12 @@ const Markets: React.FC = () => {
         <div>
           <Title level={2}>Marchés</Title>
           <Text type="secondary">
-            {user?.role === 'admin' || user?.role === 'merchant' 
+            {user?.role === 'admin' 
               ? 'Gérez les marchés du Sénégal' 
               : 'Liste des marchés du Sénégal'}
           </Text>
         </div>
-        {(user?.role === 'admin' || user?.role === 'merchant') && (
+        {(user?.role === 'admin') && (
           <Button
             type="primary"
             icon={<PlusOutlined />}
