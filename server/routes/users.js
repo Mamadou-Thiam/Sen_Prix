@@ -29,5 +29,6 @@ router.route('/:id')
 
 router.put('/:id/market', protect, authorize('admin'), assignMarket);
 router.post('/:id/rate', protect, rateMerchant);
+router.put('/:id/verify', protect, authorize('admin'), verifyMerchant);
 
 module.exports = router;

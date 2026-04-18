@@ -170,14 +170,6 @@ const Users: React.FC = () => {
       key: 'actions',
       render: (_: any, record: User) => (
         <Space>
-          {record.role === 'merchant' && (
-            <Switch
-              checked={record.isVerified}
-              checkedChildren={<CheckOutlined />}
-              unCheckedChildren={<CloseOutlined />}
-              onChange={(checked) => handleVerifyMerchant(record._id, checked)}
-            />
-          )}
           <Button
             type="text"
             onClick={() => handleEdit(record)}
