@@ -11,17 +11,17 @@ const {
 } = require('../controllers/priceController');
 const { protect, authorize } = require('../middleware/auth');
 
-router.get('/stats', protect, authorize('admin', 'moderator'), getStats);
+router.get('/stats', protect, authorize('admin'), getStats);
 router.get('/dashboard-stats', protect, authorize('admin'), getDashboardStats);
 
 router.route('/')
   .get(protect, getPrices)
   .post(protect, createPrice);
 
-router.get('/pending', protect, authorize('admin', 'moderator'), getPending);
+router.get('/pending', protect, authorize('admin'), getPending);
 
 router.get('/history/:productId', protect, getHistory);
 
-router.put('/verify/:id', protect, authorize('admin', 'moderator'), verifyPrice);
+router.put('/verify/:id', protect, authorize('admin'), verifyPrice);
 
 module.exports = router;

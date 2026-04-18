@@ -7,7 +7,7 @@ const createSchema = Joi.object({
   password: Joi.string().min(6).required(),
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
-  role: Joi.string().valid('admin', 'moderator', 'user', 'merchant').required(),
+  role: Joi.string().valid('admin', 'user', 'merchant').required(),
   phone: Joi.string()
 });
 
@@ -122,7 +122,7 @@ exports.updateUserRole = async (req, res, next) => {
   try {
     const { role } = req.body;
     
-    if (!['admin', 'moderator', 'user', 'merchant'].includes(role)) {
+    if (!['admin', 'user', 'merchant'].includes(role)) {
       return res.status(400).json({ message: 'Rôle invalide' });
     }
 

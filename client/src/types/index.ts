@@ -3,7 +3,7 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  role: 'admin' | 'moderator' | 'user' | 'merchant';
+  role: 'admin' | 'user' | 'merchant';
   phone?: string;
   isVerified: boolean;
   market?: Market;

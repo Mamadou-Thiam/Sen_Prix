@@ -11,11 +11,11 @@ const { protect, authorize } = require('../middleware/auth');
 
 router.route('/')
   .get(getMarkets)
-  .post(protect, authorize('admin', 'moderator'), createMarket);
+  .post(protect, authorize('admin', 'merchant'), createMarket);
 
 router.route('/:id')
   .get(getMarket)
-  .put(protect, authorize('admin', 'moderator'), updateMarket)
+  .put(protect, authorize('admin', 'merchant'), updateMarket)
   .delete(protect, authorize('admin'), deleteMarket);
 
 module.exports = router;

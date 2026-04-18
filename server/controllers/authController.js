@@ -15,7 +15,7 @@ const schema = {
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
     phone: Joi.string(),
-    role: Joi.string().valid('admin', 'moderator', 'user', 'merchant')
+    role: Joi.string().valid('admin', 'user', 'merchant')
   }),
   login: Joi.object({
     email: Joi.string().email().required(),

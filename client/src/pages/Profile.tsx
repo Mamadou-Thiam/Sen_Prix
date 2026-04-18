@@ -36,13 +36,11 @@ const Profile: React.FC = () => {
   const getRoleTag = (role: string) => {
     const colors: Record<string, string> = {
       admin: 'red',
-      moderator: 'blue',
       user: 'green',
       merchant: 'gold'
     };
     const labels: Record<string, string> = {
       admin: 'Administrateur',
-      moderator: 'Modérateur',
       user: 'Citoyen',
       merchant: 'Commerçant'
     };
