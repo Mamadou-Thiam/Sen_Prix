@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Modal, Form, Select, Input, message, Space, Tag, Typography, Avatar, Switch, Popconfirm } from 'antd';
-import { CheckOutlined, CloseOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userService } from '../services/api';
@@ -44,16 +44,6 @@ const Users: React.FC = () => {
       message.error('Erreur lors du chargement des utilisateurs');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleVerifyMerchant = async (id: string, isVerified: boolean) => {
-    try {
-      await userService.verifyMerchant(id, isVerified);
-      message.success(isVerified ? 'Commerçant vérifié' : 'Vérification annulée');
-      fetchUsers();
-    } catch (error) {
-      message.error('Erreur');
     }
   };
 
@@ -172,10 +162,9 @@ const Users: React.FC = () => {
         <Space>
           <Button
             type="text"
+            icon={<EditOutlined />}
             onClick={() => handleEdit(record)}
-          >
-            Modifier le rôle
-          </Button>
+          />
           <Popconfirm
             title="Êtes-vous sûr de vouloir supprimer cet utilisateur?"
             onConfirm={() => handleDelete(record._id, currentUser?._id || '')}

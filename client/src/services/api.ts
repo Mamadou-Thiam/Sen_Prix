@@ -72,9 +72,7 @@ export const userService = {
     api.put('/users/profile', data),
   getAll: (params?: { page?: number; limit?: number; role?: string }) =>
     api.get('/users', { params }),
-  getById: (id: string) => api.get(`/users/${id}`),
-  verifyMerchant: (id: string, isVerified: boolean) =>
-    api.put(`/users/${id}/verify`, { isVerified }),
+getById: (id: string) => api.get(`/users/${id}`),
   updateRole: (id: string, role: string) =>
     api.put(`/users/${id}/role`, { role }),
   assignMarket: (id: string, marketId: string) =>
