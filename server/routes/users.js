@@ -9,7 +9,8 @@ const {
   assignMarket,
   rateMerchant,
   getStats,
-  updateProfile
+  updateProfile,
+  deleteUser
 } = require('../controllers/userController');
 const { protect, authorize } = require('../middleware/auth');
 
@@ -23,7 +24,8 @@ router.put('/profile', protect, updateProfile);
 
 router.route('/:id')
   .get(protect, getUser)
-  .put(protect, authorize('admin'), updateUserRole);
+  .put(protect, authorize('admin'), updateUserRole)
+  .delete(protect, authorize('admin'), deleteUser);
 
 router.put('/:id/market', protect, authorize('admin'), assignMarket);
 router.post('/:id/rate', protect, rateMerchant);

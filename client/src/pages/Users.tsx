@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Modal, Form, Select, Input, message, Space, Tag, Typography, Avatar, Switch } from 'antd';
-import { CheckOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
+import { Table, Button, Modal, Form, Select, Input, message, Space, Tag, Typography, Avatar, Switch, Popconfirm } from 'antd';
+import { CheckOutlined, CloseOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { userService } from '../services/api';
+import { logout } from '../store';
 import { User } from '../types';
+import { RootState } from '../store';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -16,6 +20,9 @@ const Users: React.FC = () => {
   const [pagination, setPagination] = useState({ current: 1, pageSize: 20, total: 0 });
   const [form] = Form.useForm();
   const [createForm] = Form.useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
     fetchUsers();
@@ -50,15 +57,18 @@ const Users: React.FC = () => {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleUpdateRole = async (id: string, role: string) => {
-    // eslint-disable-next-line no-useless-catch
+  const handleDelete = async (id: string, currentUserId: string) => {
     try {
-      await userService.updateRole(id, role);
-      message.success('Rôle mis à jour');
-      fetchUsers();
-    } catch (error) {
-      message.error('Erreur');
+      await userService.delete(id);
+      message.success('Utilisateur supprimé');
+      if (id === currentUserId) {
+        dispatch(logout());
+        navigate('/login');
+      } else {
+        fetchUsers();
+      }
+    } catch (error: any) {
+      message.error(error.response?.data?.message || 'Erreur lors de la suppression');
     }
   };
 
@@ -176,6 +186,20 @@ const Users: React.FC = () => {
           >
             Modifier le rôle
           </Button>
+          <Popconfirm
+            title="Êtes-vous sûr de vouloir supprimer cet utilisateur?"
+            onConfirm={() => handleDelete(record._id, currentUser?._id || '')}
+            okText="Oui"
+            cancelText="Non"
+          >
+            <Button
+              type="text"
+              danger
+              icon={<DeleteOutlined />}
+            >
+              Supprimer
+            </Button>
+          </Popconfirm>
         </Space>
       )
     }

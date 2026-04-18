@@ -232,6 +232,26 @@ exports.updateProfile = async (req, res, next) => {
   }
 };
 
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const userToDelete = await User.findById(req.params.id);
+
+    if (!userToDelete) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    if (userToDelete._id.toString() === req.user._id.toString()) {
+      return res.status(400).json({ message: 'Vous ne pouvez pas supprimer votre propre compte' });
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+
+    res.json({ success: true, message: 'Utilisateur supprimé avec succès' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getStats = async (req, res, next) => {
   try {
     const User = require('../models/User');

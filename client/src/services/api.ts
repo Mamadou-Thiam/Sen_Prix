@@ -83,7 +83,8 @@ export const userService = {
     api.post(`/users/${id}/rate`, { rating }),
   getStats: () => api.get('/users/stats'),
   create: (data: { email: string; password: string; firstName: string; lastName: string; role: string; phone?: string }) =>
-    api.post('/users', data)
+    api.post('/users', data),
+  delete: (id: string) => api.delete(`/users/${id}`)
 };
 
 export const reportService = {
