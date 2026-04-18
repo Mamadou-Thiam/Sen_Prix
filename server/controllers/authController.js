@@ -46,19 +46,9 @@ exports.register = async (req, res, next) => {
       role: role || 'user'
     });
 
-    const token = generateToken(user._id);
-
     res.status(201).json({
       success: true,
-      token,
-      user: {
-        _id: user._id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        role: user.role,
-        isVerified: user.isVerified
-      }
+      message: 'Compte créé avec succès. Veuillez vous connecter.'
     });
   } catch (error) {
     next(error);

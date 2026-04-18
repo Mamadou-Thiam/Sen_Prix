@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Typography, message, Divider, Select } from 'antd';
 import { MailOutlined, LockOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { authService } from '../services/api';
-import { setUser } from '../store';
 
 const { Title, Text } = Typography;
 
@@ -21,7 +19,6 @@ interface RegisterForm {
 const Register: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleSubmit = async (values: RegisterForm) => {
     if (values.password !== values.confirmPassword) {
@@ -34,12 +31,8 @@ const Register: React.FC = () => {
       const { confirmPassword, ...registerData } = values;
       const response = await authService.register(registerData);
       if (response.data.success) {
-        dispatch(setUser({
-          user: response.data.user,
-          token: response.data.token
-        }));
-        message.success('Compte créé avec succès');
-        navigate('/dashboard');
+        message.success('Compte créé avec succès. Veuillez vous connecter.');
+        navigate('/login');
       }
     } catch (error: any) {
       message.error(error.response?.data?.message || 'Erreur lors de l\'inscription');
