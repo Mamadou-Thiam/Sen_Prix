@@ -64,12 +64,6 @@ const Profile: React.FC = () => {
               {user?.firstName} {user?.lastName}
             </Title>
             {getRoleTag(user?.role || 'user')}
-            {user?.role === 'merchant' && user?.isVerified && (
-              <Tag color="green">Vérifié</Tag>
-            )}
-            {user?.role === 'merchant' && !user?.isVerified && (
-              <Tag color="orange">En attente de vérification</Tag>
-            )}
           </div>
 
           {user?.role === 'merchant' && user?.averageRating > 0 && (
