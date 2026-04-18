@@ -250,7 +250,6 @@ const Users: React.FC = () => {
             <Select placeholder="Sélectionner un rôle">
               <Option value="user">Citoyen</Option>
               <Option value="merchant">Commerçant</Option>
-              
               <Option value="admin">Administrateur</Option>
             </Select>
           </Form.Item>
@@ -321,7 +320,6 @@ const Users: React.FC = () => {
             <Select placeholder="Sélectionner un rôle">
               <Option value="user">Citoyen</Option>
               <Option value="merchant">Commerçant</Option>
-              
               <Option value="admin">Administrateur</Option>
             </Select>
           </Form.Item>
