@@ -60,6 +60,32 @@ const MainLayout: React.FC = () => {
   };
 
   useEffect(() => {
+    if (!user) return;
+
+    let timeout: ReturnType<typeof setTimeout>;
+
+    const handleLogout = () => {
+      dispatch(logout());
+      navigate('/login');
+    };
+
+    const resetTimer = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(handleLogout, 60000);
+    };
+
+    const events = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+    events.forEach(event => window.addEventListener(event, resetTimer));
+
+    resetTimer();
+
+    return () => {
+      clearTimeout(timeout);
+      events.forEach(event => window.removeEventListener(event, resetTimer));
+    };
+  }, [user, dispatch, navigate]);
+
+  useEffect(() => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token');
