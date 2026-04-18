@@ -73,8 +73,8 @@ export const userService = {
   getAll: (params?: { page?: number; limit?: number; role?: string }) =>
     api.get('/users', { params }),
 getById: (id: string) => api.get(`/users/${id}`),
-  updateRole: (id: string, role: string) =>
-    api.put(`/users/${id}/role`, { role }),
+  updateRole: (id: string, data: { role: string }) =>
+    api.put(`/users/${id}`, data),
   assignMarket: (id: string, marketId: string) =>
     api.put(`/users/${id}/market`, { marketId }),
   rateMerchant: (id: string, rating: number) =>

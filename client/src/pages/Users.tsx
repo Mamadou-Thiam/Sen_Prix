@@ -72,7 +72,7 @@ const Users: React.FC = () => {
     try {
       const values = await form.validateFields();
       if (editingUser) {
-        await userService.updateRole(editingUser._id, values.role);
+        await userService.updateRole(editingUser._id, { role: values.role });
         message.success('Rôle mis à jour');
         setModalVisible(false);
         form.resetFields();
@@ -80,7 +80,8 @@ const Users: React.FC = () => {
         fetchUsers();
       }
     } catch (error: any) {
-      message.error(error.response?.data?.message || 'Erreur');
+      console.error('Update role error:', error);
+      message.error(error.response?.data?.message || 'Erreur lors de la mise à jour du rôle');
     }
   };
 
@@ -139,15 +140,6 @@ const Users: React.FC = () => {
       dataIndex: 'phone',
       key: 'phone',
       render: (phone: string) => phone || '-'
-    },
-    {
-      title: 'Vérifié',
-      dataIndex: 'isVerified',
-      key: 'isVerified',
-      render: (verified: boolean, record: User) => {
-        if (record.role !== 'merchant') return '-';
-        return verified ? <Tag color="green">Oui</Tag> : <Tag color="orange">Non</Tag>;
-      }
     },
     {
       title: 'Date',
