@@ -54,10 +54,9 @@ const Login: React.FC = () => {
         <div className="auth-right">
           <div className="auth-card">
             <div className="auth-header">
-              <Title level={3} style={{ marginBottom: 8, color: '#262626', fontWeight: 600 }}>
-                Bon retour
+              <Title level={3} style={{ marginBottom: 24, color: '#262626', fontWeight: 600 }}>
+                Connexion
               </Title>
-              <Text type="secondary">Connectez-vous pour continuer</Text>
             </div>
 
             <Form
