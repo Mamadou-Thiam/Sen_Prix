@@ -3,6 +3,7 @@ import { Form, Input, Button, Typography, message, Divider, Select } from 'antd'
 import { MailOutlined, LockOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/api';
+import LogoImage from '../assets/logo_sp.png';
 
 const { Title, Text } = Typography;
 
@@ -45,9 +46,17 @@ const Register: React.FC = () => {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-header">
-          <div className="logo" style={{ justifyContent: 'center', marginBottom: '16px' }}>
-            <span className="logo-green">Sén</span>
-            <span className="logo-yellow">Prix</span>
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <img 
+              src={LogoImage} 
+              alt="SénPrix" 
+              style={{ 
+                width: '120px', 
+                height: 'auto',
+                borderRadius: '12px',
+                boxShadow: '0 4px 20px rgba(0, 133, 63, 0.3)'
+              }} 
+            />
           </div>
           <Title level={3} className="auth-title">Inscription</Title>
           <Text className="auth-subtitle">Créez un compte pour rejoindre SénPrix</Text>

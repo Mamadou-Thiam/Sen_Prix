@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { authService } from '../services/api';
 import { setUser } from '../store';
+import LogoImage from '../assets/logo_sp.png';
 
 const { Title, Text } = Typography;
 
@@ -41,9 +42,17 @@ const Login: React.FC = () => {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-header">
-          <div className="logo" style={{ justifyContent: 'center', marginBottom: '16px' }}>
-            <span className="logo-green">Sén</span>
-            <span className="logo-yellow">Prix</span>
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <img 
+              src={LogoImage} 
+              alt="SénPrix" 
+              style={{ 
+                width: '120px', 
+                height: 'auto',
+                borderRadius: '12px',
+                boxShadow: '0 4px 20px rgba(0, 133, 63, 0.3)'
+              }} 
+            />
           </div>
           <Title level={3} className="auth-title">Connexion</Title>
           <Text className="auth-subtitle">Connectez-vous pour accéder à la plateforme</Text>

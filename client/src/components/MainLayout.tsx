@@ -18,6 +18,7 @@ import {
 import { RootState } from '../store';
 import { logout, setUser } from '../store';
 import { authService, alertService } from '../services/api';
+import LogoImage from '../assets/logo_sp.png';
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
@@ -205,14 +206,16 @@ const MainLayout: React.FC = () => {
           width={sidebarWidth}
           className={`app-sider ${collapsed ? 'ant-layout-sider-collapsed' : ''}`}
         >
-          <div className="logo" style={{ padding: '16px', color: '#fff', justifyContent: collapsed ? 'center' : 'flex-start' }}>
-            {!collapsed && (
-              <>
-                <span className="logo-green">Sén</span>
-                <span className="logo-yellow">Prix</span>
-              </>
-            )}
-            {collapsed && <span className="logo-red">SP</span>}
+          <div style={{ padding: '16px', textAlign: 'center' }}>
+            <img 
+              src={LogoImage} 
+              alt="SénPrix" 
+              style={{ 
+                width: collapsed ? '40px' : '100px', 
+                height: 'auto',
+                transition: 'width 0.2s'
+              }} 
+            />
           </div>
           <Menu
             theme="dark"
