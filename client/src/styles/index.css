@@ -122,6 +122,12 @@ body {
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--color-green) 0%, #006B2F 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
 }
 
 .auth-card {
@@ -131,6 +137,8 @@ body {
   width: 100%;
   max-width: 420px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .auth-header {
