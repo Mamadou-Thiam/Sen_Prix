@@ -140,15 +140,15 @@ const Users: React.FC = () => {
       key: 'phone',
       render: (phone: string) => phone || '-'
     },
-    {
-      title: 'Vérifié',
-      dataIndex: 'isVerified',
-      key: 'isVerified',
-      render: (verified: boolean, record: User) => {
-        if (record.role !== 'merchant') return '-';
-        return verified ? <Tag color="green">Oui</Tag> : <Tag color="orange">Non</Tag>;
-      }
-    },
+    // {
+    //   title: 'Vérifié',
+    //   dataIndex: 'isVerified',
+    //   key: 'isVerified',
+    //   render: (verified: boolean, record: User) => {
+    //     if (record.role !== 'merchant') return '-';
+    //     return verified ? <Tag color="green">Oui</Tag> : <Tag color="orange">Non</Tag>;
+    //   }
+    // },
     {
       title: 'Date',
       dataIndex: 'createdAt',
