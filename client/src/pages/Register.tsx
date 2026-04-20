@@ -14,6 +14,7 @@ interface RegisterForm {
   firstName: string;
   lastName: string;
   phone?: string;
+  role?: string;
 }
 
 const Register: React.FC = () => {
@@ -122,6 +123,16 @@ const Register: React.FC = () => {
                   size="large"
                   style={{ height: 48 }}
                 />
+              </Form.Item>
+
+              <Form.Item
+                name="role"
+                initialValue="user"
+              >
+                <Select size="large" placeholder="Type de compte" style={{ height: 48 }}>
+                  <Select.Option value="user">Citoyen</Select.Option>
+                  <Select.Option value="merchant">Commerçant</Select.Option>
+                </Select>
               </Form.Item>
 
               <Form.Item
