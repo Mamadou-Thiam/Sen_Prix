@@ -192,6 +192,8 @@ const MainLayout: React.FC = () => {
     },
   ];
 
+  const sidebarWidth = collapsed ? 80 : 240;
+
   return (
     <Layout className="app-layout">
       {!isMobile && (
@@ -200,8 +202,8 @@ const MainLayout: React.FC = () => {
           collapsible
           collapsed={collapsed}
           theme="dark"
-          width={240}
-          className={collapsed ? 'ant-layout-sider-collapsed' : ''}
+          width={sidebarWidth}
+          className={`app-sider ${collapsed ? 'ant-layout-sider-collapsed' : ''}`}
         >
           <div className="logo" style={{ padding: '16px', color: '#fff', justifyContent: collapsed ? 'center' : 'flex-start' }}>
             {!collapsed && (
@@ -340,7 +342,7 @@ const MainLayout: React.FC = () => {
             </Dropdown>
           </Space>
         </Header>
-        <Content style={{ margin: isMobile ? '8px' : '16px', padding: isMobile ? '12px' : '24px', background: '#fff', borderRadius: '8px', minHeight: 'calc(100vh - 64px - 32px)' }}>
+        <Content style={{ margin: isMobile ? '8px' : '16px', padding: isMobile ? '12px' : '24px', background: '#fff', borderRadius: '8px', minHeight: 'calc(100vh - 64px)' }}>
           <Outlet />
         </Content>
       </Layout>
