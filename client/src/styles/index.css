@@ -52,15 +52,14 @@ body {
   position: fixed !important;
   top: 0;
   right: 0;
-  left: 80px;
+  left: 240px;
   z-index: 100;
   height: 64px;
   background: #fff !important;
   transition: left 0.2s;
 }
 
-.app-layout .ant-layout-sider-collapsed + .ant-layout .ant-layout-header,
-.app-layout .app-sider.ant-layout-sider-collapsed + .ant-layout .ant-layout-header {
+.app-layout .app-sider.ant-layout-sider-collapsed ~ .ant-layout .ant-layout-header {
   left: 80px;
 }
 
@@ -69,8 +68,7 @@ body {
   transition: margin-left 0.2s;
 }
 
-.app-layout .ant-layout-sider-collapsed + .ant-layout > .ant-layout:last-child,
-.app-layout .app-sider.ant-layout-sider-collapsed + .ant-layout > .ant-layout:last-child {
+.app-layout .app-sider.ant-layout-sider-collapsed ~ .ant-layout:last-child {
   margin-left: 80px;
 }
 
@@ -82,12 +80,12 @@ body {
 }
 
 @media (max-width: 768px) {
-  .app-layout > .ant-layout:last-child {
-    margin-left: 0 !important;
-  }
-
   .app-layout .ant-layout-header {
     left: 0 !important;
+  }
+
+  .app-layout > .ant-layout:last-child {
+    margin-left: 0 !important;
   }
 
   .app-layout .ant-layout-content {
