@@ -40,81 +40,90 @@ const Login: React.FC = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
-        <div className="auth-header">
-          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <img 
-              src={LogoImage} 
-              alt="SénPrix" 
-              style={{ 
-                width: '120px', 
-                height: 'auto',
-                borderRadius: '12px',
-                boxShadow: '0 4px 20px rgba(0, 133, 63, 0.3)'
-              }} 
-            />
-          </div>
-          <Title level={3} className="auth-title">Connexion</Title>
-          <Text className="auth-subtitle">Connectez-vous pour accéder à la plateforme</Text>
+      <div className="auth-split">
+        <div className="auth-left">
+          <img 
+            src={LogoImage} 
+            alt="SénPrix" 
+            className="auth-left-logo"
+          />
+          <h1>SénPrix</h1>
+          <p>Votre plateforme de suivi des prix du marchés au Sénégal</p>
         </div>
+        
+        <div className="auth-right">
+          <div className="auth-card">
+            <div className="auth-header">
+              <Title level={3} style={{ marginBottom: 8, color: '#262626', fontWeight: 600 }}>
+                Bon retour
+              </Title>
+              <Text type="secondary">Connectez-vous pour continuer</Text>
+            </div>
 
-        <Form
-          name="login"
-          onFinish={handleSubmit}
-          layout="vertical"
-          requiredMark={false}
-        >
-          <Form.Item
-            name="email"
-            rules={[
-              { required: true, message: 'Veuillez entrer votre email' },
-              { type: 'email', message: 'Email invalide' }
-            ]}
-          >
-            <Input
-              prefix={<MailOutlined />}
-              placeholder="Email"
-              size="large"
-            />
-          </Form.Item>
+            <Form
+              name="login"
+              onFinish={handleSubmit}
+              layout="vertical"
+              requiredMark={false}
+              style={{ marginTop: 32 }}
+            >
+              <Form.Item
+                name="email"
+                rules={[
+                  { required: true, message: 'Veuillez entrer votre email' },
+                  { type: 'email', message: 'Email invalide' }
+                ]}
+              >
+                <Input
+                  prefix={<MailOutlined style={{ color: '#8c8c8c' }} />}
+                  placeholder="Email"
+                  size="large"
+                  style={{ height: 48 }}
+                />
+              </Form.Item>
 
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Veuillez entrer votre mot de passe' }]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="Mot de passe"
-              size="large"
-            />
-          </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[{ required: true, message: 'Veuillez entrer votre mot de passe' }]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined style={{ color: '#8c8c8c' }} />}
+                  placeholder="Mot de passe"
+                  size="large"
+                  style={{ height: 48 }}
+                />
+              </Form.Item>
 
-          <Form.Item>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loading}
+                  block
+                  size="large"
+                  style={{ height: 48, fontSize: 16, fontWeight: 500 }}
+                  className="senprix-btn-primary"
+                >
+                  Se connecter
+                </Button>
+              </Form.Item>
+            </Form>
+
+            <Divider style={{ margin: '24px 0' }}>
+              <Text type="secondary" style={{ fontSize: 13 }}>Nouveau sur SénPrix?</Text>
+            </Divider>
+
             <Button
-              type="primary"
-              htmlType="submit"
-              loading={loading}
+              type="default"
               block
               size="large"
-              className="senprix-btn-primary"
+              style={{ height: 48, fontSize: 15 }}
+              onClick={() => navigate('/register')}
             >
-              Se connecter
+              Créer un compte
             </Button>
-          </Form.Item>
-        </Form>
-
-        <Divider>
-          <Text type="secondary">Nouveau sur SénPrix?</Text>
-        </Divider>
-
-        <Button
-          type="default"
-          block
-          size="large"
-          onClick={() => navigate('/register')}
-        >
-          Créer un compte
-        </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

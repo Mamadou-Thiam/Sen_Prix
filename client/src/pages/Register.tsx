@@ -44,151 +44,164 @@ const Register: React.FC = () => {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
-        <div className="auth-header">
-          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <img 
-              src={LogoImage} 
-              alt="SénPrix" 
-              style={{ 
-                width: '120px', 
-                height: 'auto',
-                borderRadius: '12px',
-                boxShadow: '0 4px 20px rgba(0, 133, 63, 0.3)'
-              }} 
-            />
-          </div>
-          <Title level={3} className="auth-title">Inscription</Title>
-          <Text className="auth-subtitle">Créez un compte pour rejoindre SénPrix</Text>
+      <div className="auth-split">
+        <div className="auth-left">
+          <img 
+            src={LogoImage} 
+            alt="SénPrix" 
+            className="auth-left-logo"
+          />
+          <h1>SénPrix</h1>
+          <p>Rejoignez-nous pour suivre les prix du marché au Sénégal</p>
         </div>
+        
+        <div className="auth-right">
+          <div className="auth-card" style={{ maxWidth: 480 }}>
+            <div className="auth-header">
+              <Title level={3} style={{ marginBottom: 8, color: '#262626', fontWeight: 600 }}>
+                Créer un compte
+              </Title>
+              <Text type="secondary">Inscrivez-vous pour commencer</Text>
+            </div>
 
-        <Form
-          name="register"
-          onFinish={handleSubmit}
-          layout="vertical"
-          requiredMark={false}
-        >
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <Form.Item
-              name="firstName"
-              rules={[{ required: true, message: 'Veuillez entrer votre prénom' }]}
-              style={{ flex: '1 1 auto', minWidth: 'calc(50% - 8px)' }}
+            <Form
+              name="register"
+              onFinish={handleSubmit}
+              layout="vertical"
+              requiredMark={false}
+              style={{ marginTop: 32 }}
             >
-              <Input
-                prefix={<UserOutlined />}
-                placeholder="Prénom"
-                size="large"
-              />
-            </Form.Item>
+              <div style={{ display: 'flex', gap: 16 }}>
+                <Form.Item
+                  name="firstName"
+                  rules={[{ required: true, message: 'Prénom requis' }]}
+                  style={{ flex: 1 }}
+                >
+                  <Input
+                    prefix={<UserOutlined style={{ color: '#8c8c8c' }} />}
+                    placeholder="Prénom"
+                    size="large"
+                    style={{ height: 48 }}
+                  />
+                </Form.Item>
 
-            <Form.Item
-              name="lastName"
-              rules={[{ required: true, message: 'Veuillez entrer votre nom' }]}
-              style={{ flex: '1 1 auto', minWidth: 'calc(50% - 8px)' }}
-            >
-              <Input
-                prefix={<UserOutlined />}
-                placeholder="Nom"
-                size="large"
-              />
-            </Form.Item>
-          </div>
+                <Form.Item
+                  name="lastName"
+                  rules={[{ required: true, message: 'Nom requis' }]}
+                  style={{ flex: 1 }}
+                >
+                  <Input
+                    prefix={<UserOutlined style={{ color: '#8c8c8c' }} />}
+                    placeholder="Nom"
+                    size="large"
+                    style={{ height: 48 }}
+                  />
+                </Form.Item>
+              </div>
 
-          <Form.Item
-            name="email"
-            rules={[
-              { required: true, message: 'Veuillez entrer votre email' },
-              { type: 'email', message: 'Email invalide' }
-            ]}
-          >
-            <Input
-              prefix={<MailOutlined />}
-              placeholder="Email"
-              size="large"
-            />
-          </Form.Item>
+              <Form.Item
+                name="email"
+                rules={[
+                  { required: true, message: 'Email requis' },
+                  { type: 'email', message: 'Email invalide' }
+                ]}
+              >
+                <Input
+                  prefix={<MailOutlined style={{ color: '#8c8c8c' }} />}
+                  placeholder="Email"
+                  size="large"
+                  style={{ height: 48 }}
+                />
+              </Form.Item>
 
-          <Form.Item
-            name="phone"
-          >
-            <Input
-              prefix={<PhoneOutlined />}
-              placeholder="Téléphone (optionnel)"
-              size="large"
-            />
-          </Form.Item>
+              <Form.Item
+                name="phone"
+              >
+                <Input
+                  prefix={<PhoneOutlined style={{ color: '#8c8c8c' }} />}
+                  placeholder="Téléphone (optionnel)"
+                  size="large"
+                  style={{ height: 48 }}
+                />
+              </Form.Item>
 
-          <Form.Item
-            name="role"
-            initialValue="user"
-          >
-            <Select size="large" placeholder="Type de compte">
-              <Select.Option value="user">Citoyen</Select.Option>
-              <Select.Option value="merchant">Commerçant</Select.Option>
-            </Select>
-          </Form.Item>
+              <Form.Item
+                name="role"
+                initialValue="user"
+              >
+                <Select size="large" placeholder="Type de compte" style={{ height: 48 }}>
+                  <Select.Option value="user">Citoyen</Select.Option>
+                  <Select.Option value="merchant">Commerçant</Select.Option>
+                </Select>
+              </Form.Item>
 
-          <Form.Item
-            name="password"
-            rules={[
-              { required: true, message: 'Veuillez entrer un mot de passe' },
-              { min: 6, message: 'Le mot de passe doit contenir au moins 6 caractères' }
-            ]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="Mot de passe"
-              size="large"
-            />
-          </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: 'Mot de passe requis' },
+                  { min: 6, message: 'Minimum 6 caractères' }
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined style={{ color: '#8c8c8c' }} />}
+                  placeholder="Mot de passe"
+                  size="large"
+                  style={{ height: 48 }}
+                />
+              </Form.Item>
 
-          <Form.Item
-            name="confirmPassword"
-            rules={[
-              { required: true, message: 'Veuillez confirmer votre mot de passe' },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(new Error('Les mots de passe ne correspondent pas'));
-                },
-              }),
-            ]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="Confirmer le mot de passe"
-              size="large"
-            />
-          </Form.Item>
+              <Form.Item
+                name="confirmPassword"
+                rules={[
+                  { required: true, message: 'Confirmation requise' },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error('Mot de passe différent'));
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined style={{ color: '#8c8c8c' }} />}
+                  placeholder="Confirmer le mot de passe"
+                  size="large"
+                  style={{ height: 48 }}
+                />
+              </Form.Item>
 
-          <Form.Item>
+              <Form.Item style={{ marginBottom: 16 }}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={loading}
+                  block
+                  size="large"
+                  style={{ height: 48, fontSize: 16, fontWeight: 500 }}
+                  className="senprix-btn-primary"
+                >
+                  S'inscrire
+                </Button>
+              </Form.Item>
+            </Form>
+
+            <Divider style={{ margin: '16px 0' }}>
+              <Text type="secondary" style={{ fontSize: 13 }}>Déjà inscrit?</Text>
+            </Divider>
+
             <Button
-              type="primary"
-              htmlType="submit"
-              loading={loading}
+              type="default"
               block
               size="large"
-              className="senprix-btn-primary"
+              style={{ height: 48, fontSize: 15 }}
+              onClick={() => navigate('/login')}
             >
-              S'inscrire
+              Se connecter
             </Button>
-          </Form.Item>
-        </Form>
-
-        <Divider>
-          <Text type="secondary">Déjà inscrit?</Text>
-        </Divider>
-
-        <Button
-          type="default"
-          block
-          size="large"
-          onClick={() => navigate('/login')}
-        >
-          Se connecter
-        </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
