@@ -1,0 +1,117 @@
+// SénPrix - JDL Studio Model
+// Plateforme de digitalisation de la surveillance des marchés au Sénégal
+
+application {
+  config {
+    baseName senprix,
+    applicationType monolith,
+    databaseType mongodb,
+    packageName com.senprix,
+    authenticationType jwt,
+    prodDatabaseType mongodb,
+    buildTool gradle
+  }
+}
+
+enum Role {
+  ADMIN,
+  MODERATOR,
+  USER,
+  MERCHANT
+}
+
+enum ReportType {
+  PRICE_INCORRECT,
+  PRODUCT_QUALITY,
+  MERCHANT_BEHAVIOR,
+  FAKE_PRODUCT,
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING,
+  VERIFIED,
+  REJECTED
+}
+
+enum ProductCategory {
+  RIZ,
+  HUILE,
+  SUCRE,
+  FARINE,
+  LAIT,
+  GAZ,
+  AUTRE
+}
+
+enum AlertType {
+  HIGH_PRICE,
+  SUSPICIOUS_VARIATION
+}
+
+entity User {
+  email String required unique,
+  password String required,
+  firstName String required,
+  lastName String required,
+  role Role required,
+  phone String,
+  isVerified Boolean,
+  averageRating Float,
+  createdAt Date,
+  updatedAt Date
+}
+
+entity Product {
+  name String required,
+  category ProductCategory required,
+  description String,
+  unit String required,
+  image String,
+  price Float required,
+  createdAt Date
+}
+
+entity Market {
+  name String required,
+  city String required,
+  address String,
+  location GeoJson,
+  createdAt Date
+}
+
+entity Report {
+  type ReportType required,
+  description String required,
+  price Float,
+  quantity String,
+  reporterRole Role required,
+  status ReportStatus required,
+  isRead Boolean,
+  createdAt Date
+}
+
+entity Alert {
+  type AlertType required,
+  message String required,
+  isRead Boolean,
+  createdAt Date
+}
+
+relationship ManyToOne {
+  User{market} to Market
+  Report{product} to Product
+  Report{market} to Market
+  Report{reportedBy} to User
+  Alert{product} to Product
+  Alert{market} to Market
+}
+
+// DTO for all entities
+dto * with mapstruct
+
+// Set service options
+service all with serviceImpl
+
+// Set pagination options
+paginate User, Product, Market, Report, Alert with pagination
