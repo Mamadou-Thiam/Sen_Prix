@@ -1,23 +1,25 @@
-// SénPrix - JDL Studio Model
-// Plateforme de digitalisation de la surveillance des marchés au Sénégal
-
-application {
-  config {
-    baseName senprix,
-    applicationType monolith,
-    databaseType mongodb,
-    packageName com.senprix,
-    authenticationType jwt,
-    prodDatabaseType mongodb,
-    buildTool gradle
-  }
-}
+// SénPrix - Modèle de données
+// Plateforme de surveillance des marchés au Sénégal
 
 enum Role {
   ADMIN,
-  MODERATOR,
   USER,
   MERCHANT
+}
+
+enum ProductCategory {
+  RIZ,
+  HUILE,
+  SUCRE,
+  FARINE,
+  LAIT,
+  GAZ,
+  AUTRE
+}
+
+enum PriceSource {
+  CITOYEN,
+  COMMERCANT
 }
 
 enum ReportType {
@@ -34,72 +36,69 @@ enum ReportStatus {
   REJECTED
 }
 
-enum ProductCategory {
-  RIZ,
-  HUILE,
-  SUCRE,
-  FARINE,
-  LAIT,
-  GAZ,
-  AUTRE
-}
-
 enum AlertType {
   HIGH_PRICE,
   SUSPICIOUS_VARIATION
 }
 
 entity User {
-  email String required unique,
-  password String required,
-  firstName String required,
-  lastName String required,
-  role Role required,
-  phone String,
-  isVerified Boolean,
-  averageRating Float,
-  createdAt Date,
-  updatedAt Date
+  email String required unique
+  password String required
+  firstName String required
+  lastName String required
+  role Role required
+  phone String
+  isVerified Boolean
+  averageRating Float
 }
 
 entity Product {
-  name String required,
-  category ProductCategory required,
-  description String,
-  unit String required,
-  image String,
-  price Float required,
-  createdAt Date
+  name String required
+  category ProductCategory required
+  description String
+  unit String required
+  image String
+  price Float required
 }
 
 entity Market {
-  name String required,
-  city String required,
-  address String,
-  location GeoJson,
-  createdAt Date
+  name String required
+  city String required
+  address String
+  latitude Float
+  longitude Float
+}
+
+entity Price {
+  price Float required
+  quantity String
+  date Date
+  source PriceSource
+  isVerified Boolean
 }
 
 entity Report {
-  type ReportType required,
-  description String required,
-  price Float,
-  quantity String,
-  reporterRole Role required,
-  status ReportStatus required,
-  isRead Boolean,
-  createdAt Date
+  type ReportType required
+  description String
+  price Float
+  quantity String
+  reporterRole Role required
+  status ReportStatus required
+  isRead Boolean
 }
 
 entity Alert {
-  type AlertType required,
-  message String required,
-  isRead Boolean,
-  createdAt Date
+  type AlertType required
+  message String required
+  isRead Boolean
 }
 
 relationship ManyToOne {
   User{market} to Market
+  Price{product} to Product
+  Price{market} to Market
+  Price{user} to User
+  Price{merchant} to User
   Report{product} to Product
   Report{market} to Market
   Report{reportedBy} to User
@@ -107,11 +106,4 @@ relationship ManyToOne {
   Alert{market} to Market
 }
 
-// DTO for all entities
-dto * with mapstruct
-
-// Set service options
-service all with serviceImpl
-
-// Set pagination options
-paginate User, Product, Market, Report, Alert with pagination
+paginate User, Product, Market, Price, Report, Alert with pagination
