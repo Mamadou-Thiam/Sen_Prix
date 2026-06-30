@@ -13,6 +13,7 @@ import Profile from './pages/Profile';
 import Users from './pages/Users';
 import Reports from './pages/Reports';
 import ReportPrice from './pages/ReportPrice';
+import MapView from './pages/MapView';
 
 const ProtectedRoute: React.FC<{ roles?: string[] }> = ({ roles }) => {
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
@@ -49,6 +50,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       
       <Route element={<MainLayout />}>
+        <Route path="map" element={<MapView />} />
         <Route element={<ProtectedRoute roles={['admin']} />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="users" element={<Users />} />
@@ -67,8 +69,8 @@ function App() {
         </Route>
       </Route>
       
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/map" replace />} />
+      <Route path="*" element={<Navigate to="/map" replace />} />
     </Routes>
   );
 }

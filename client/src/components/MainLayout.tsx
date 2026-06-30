@@ -14,6 +14,7 @@ import {
   MenuUnfoldOutlined,
   FlagOutlined,
   WarningOutlined,
+  EnvironmentOutlined,
 } from '@ant-design/icons';
 import { RootState } from '../store';
 import { logout, setUser } from '../store';
@@ -122,60 +123,67 @@ const MainLayout: React.FC = () => {
   };
 
   const menuItems = [
-    ...(user?.role === 'admin' ? [{
-      key: '/dashboard',
-      icon: <DashboardOutlined />,
-      label: 'Dashboard',
-    }] : []),
     {
-      key: '/products',
-      icon: <ShoppingOutlined />,
-      label: 'Produits',
+      key: '/map',
+      icon: <EnvironmentOutlined />,
+      label: 'Carte des prix',
     },
-    {
-      key: '/markets',
-      icon: <ShopOutlined />,
-      label: 'Marchés',
-    },
-    ...(user?.role !== 'admin' ? [{
-      key: '/report-price',
-      icon: <WarningOutlined />,
-      label: 'Signaler un prix',
-    }] : []),
-    ...(!user?.role || user?.role !== 'admin' ? [{
-      key: '/alerts',
-      icon: <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginRight: '8px' }}>
-        <BellOutlined />
-        {unreadCount > 0 && (
-          <span style={{
-            position: 'absolute',
-            top: -8,
-            right: -12,
-            background: '#E31B23',
-            color: '#fff',
-            borderRadius: '10px',
-            padding: '0 6px',
-            fontSize: '10px',
-            minWidth: '18px',
-            textAlign: 'center',
-            lineHeight: '18px'
-          }}>
-            {unreadCount > 99 ? '99+' : unreadCount}
-          </span>
-        )}
-      </div>,
-      label: 'Alertes',
-    }] : []),
-    ...(user?.role === 'admin' ? [{
-      key: '/users',
-      icon: <TeamOutlined />,
-      label: 'Utilisateurs',
-    },
-    {
-      key: '/reports',
-      icon: <FlagOutlined />,
-      label: 'Signalements',
-    }] : []),
+    ...(user ? [
+      ...(user.role === 'admin' ? [{
+        key: '/dashboard',
+        icon: <DashboardOutlined />,
+        label: 'Dashboard',
+      }] : []),
+      {
+        key: '/products',
+        icon: <ShoppingOutlined />,
+        label: 'Produits',
+      },
+      {
+        key: '/markets',
+        icon: <ShopOutlined />,
+        label: 'Marchés',
+      },
+      ...(user.role !== 'admin' ? [{
+        key: '/report-price',
+        icon: <WarningOutlined />,
+        label: 'Signaler un prix',
+      }] : []),
+      ...(user.role !== 'admin' ? [{
+        key: '/alerts',
+        icon: <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginRight: '8px' }}>
+          <BellOutlined />
+          {unreadCount > 0 && (
+            <span style={{
+              position: 'absolute',
+              top: -8,
+              right: -12,
+              background: '#E31B23',
+              color: '#fff',
+              borderRadius: '10px',
+              padding: '0 6px',
+              fontSize: '10px',
+              minWidth: '18px',
+              textAlign: 'center',
+              lineHeight: '18px'
+            }}>
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </span>
+          )}
+        </div>,
+        label: 'Alertes',
+      }] : []),
+      ...(user.role === 'admin' ? [{
+        key: '/users',
+        icon: <TeamOutlined />,
+        label: 'Utilisateurs',
+      },
+      {
+        key: '/reports',
+        icon: <FlagOutlined />,
+        label: 'Signalements',
+      }] : []),
+    ] : []),
   ];
 
   const userMenuItems = [
@@ -243,19 +251,27 @@ const MainLayout: React.FC = () => {
             background: 'linear-gradient(135deg, #00853F 0%, #00954A 100%)',
             borderBottom: '1px solid rgba(255,255,255,0.1)'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-              <Avatar size={48} style={{ backgroundColor: '#fff', color: '#00853F', fontSize: '18px', fontWeight: 'bold' }}>
-                {user?.firstName?.[0]}{user?.lastName?.[0]}
-              </Avatar>
-              <div>
-                <div style={{ color: '#fff', fontWeight: 600, fontSize: '16px' }}>
-                  {user?.firstName} {user?.lastName}
-                </div>
-                <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px' }}>
-                  {user?.email}
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                <Avatar size={48} style={{ backgroundColor: '#fff', color: '#00853F', fontSize: '18px', fontWeight: 'bold' }}>
+                  {user?.firstName?.[0]}{user?.lastName?.[0]}
+                </Avatar>
+                <div>
+                  <div style={{ color: '#fff', fontWeight: 600, fontSize: '16px' }}>
+                    {user?.firstName} {user?.lastName}
+                  </div>
+                  <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px' }}>
+                    {user?.email}
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div style={{ textAlign: 'center' }}>
+                <Button type="primary" className="senprix-btn-primary" onClick={() => navigate('/login')}>
+                  Se connecter
+                </Button>
+              </div>
+            )}
           </div>
           <Menu
             theme="dark"
@@ -265,30 +281,32 @@ const MainLayout: React.FC = () => {
             onClick={handleMenuClick}
             style={{ background: 'transparent', borderRight: 0 }}
           />
-          <div style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: '16px 20px',
-            borderTop: '1px solid rgba(255,255,255,0.1)',
-            background: '#001529'
-          }}>
-            <Button
-              type="text"
-              icon={<LogoutOutlined />}
-              onClick={handleLogout}
-              style={{
-                color: 'rgba(255,255,255,0.65)',
-                width: '100%',
-                justifyContent: 'flex-start',
-                height: 'auto',
-                padding: '8px 12px'
-              }}
-            >
-              Déconnexion
-            </Button>
-          </div>
+          {user && (
+            <div style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              padding: '16px 20px',
+              borderTop: '1px solid rgba(255,255,255,0.1)',
+              background: '#001529'
+            }}>
+              <Button
+                type="text"
+                icon={<LogoutOutlined />}
+                onClick={handleLogout}
+                style={{
+                  color: 'rgba(255,255,255,0.65)',
+                  width: '100%',
+                  justifyContent: 'flex-start',
+                  height: 'auto',
+                  padding: '8px 12px'
+                }}
+              >
+                Déconnexion
+              </Button>
+            </div>
+          )}
         </Drawer>
       )}
 
@@ -310,39 +328,47 @@ const MainLayout: React.FC = () => {
             />
           )}
           <Space>
-            {user?.role !== 'admin' && (
-              <div 
-                onClick={() => navigate('/alerts')}
-                style={{ display: 'flex', alignItems: 'center', position: 'relative', cursor: 'pointer', marginRight: '8px' }}
-              >
-                <BellOutlined style={{ fontSize: '18px' }} />
-                {unreadCount > 0 && (
-                  <span style={{
-                    position: 'absolute',
-                    top: -6,
-                    right: -12,
-                    background: '#E31B23',
-                    color: '#fff',
-                    borderRadius: '10px',
-                    padding: '0 6px',
-                    fontSize: '10px',
-                    minWidth: '18px',
-                    textAlign: 'center',
-                    lineHeight: '18px'
-                  }}>
-                    {unreadCount > 99 ? '99+' : unreadCount}
-                  </span>
+            {user ? (
+              <>
+                {user?.role !== 'admin' && (
+                  <div 
+                    onClick={() => navigate('/alerts')}
+                    style={{ display: 'flex', alignItems: 'center', position: 'relative', cursor: 'pointer', marginRight: '8px' }}
+                  >
+                    <BellOutlined style={{ fontSize: '18px' }} />
+                    {unreadCount > 0 && (
+                      <span style={{
+                        position: 'absolute',
+                        top: -6,
+                        right: -12,
+                        background: '#E31B23',
+                        color: '#fff',
+                        borderRadius: '10px',
+                        padding: '0 6px',
+                        fontSize: '10px',
+                        minWidth: '18px',
+                        textAlign: 'center',
+                        lineHeight: '18px'
+                      }}>
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                      </span>
+                    )}
+                  </div>
                 )}
-              </div>
+                <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
+                  <Space style={{ cursor: 'pointer' }}>
+                    <Avatar style={{ backgroundColor: '#00853F' }}>
+                      {user?.firstName?.[0]}{user?.lastName?.[0]}
+                    </Avatar>
+                    {!isMobile && <Text>{user?.firstName} {user?.lastName}</Text>}
+                  </Space>
+                </Dropdown>
+              </>
+            ) : (
+              <Button type="primary" className="senprix-btn-primary" onClick={() => navigate('/login')}>
+                Se connecter
+              </Button>
             )}
-            <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
-              <Space style={{ cursor: 'pointer' }}>
-                <Avatar style={{ backgroundColor: '#00853F' }}>
-                  {user?.firstName?.[0]}{user?.lastName?.[0]}
-                </Avatar>
-                {!isMobile && <Text>{user?.firstName} {user?.lastName}</Text>}
-              </Space>
-            </Dropdown>
           </Space>
         </Header>
         <Content style={{ margin: isMobile ? '8px' : '16px', padding: isMobile ? '12px' : '24px', background: '#fff', borderRadius: '8px', minHeight: 'calc(100vh - 64px)' }}>

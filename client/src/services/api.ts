@@ -55,7 +55,8 @@ export const priceService = {
   getPending: (params?: { page?: number; limit?: number }) =>
     api.get('/prices/pending', { params }),
   verify: (id: string, isVerified: boolean) =>
-    api.put(`/prices/verify/${id}`, { isVerified })
+    api.put(`/prices/verify/${id}`, { isVerified }),
+  getMapData: () => api.get('/prices/map-data')
 };
 
 export const alertService = {

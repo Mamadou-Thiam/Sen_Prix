@@ -1,5 +1,6 @@
 const Price = require('../models/Price');
 const Product = require('../models/Product');
+const Market = require('../models/Market');
 const Report = require('../models/Report');
 const Joi = require('joi');
 
@@ -195,6 +196,65 @@ exports.verifyPrice = async (req, res, next) => {
     }
 
     res.json({ success: true, price });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getMapData = async (req, res, next) => {
+  try {
+    const essentialCategories = ['riz', 'huile', 'sucre', 'farine', 'lait', 'gaz'];
+
+    const markets = await Market.find({
+      latitude: { $exists: true, $ne: null },
+      longitude: { $exists: true, $ne: null }
+    });
+
+    const products = await Product.find({ category: { $in: essentialCategories } });
+
+    const mapData = await Promise.all(markets.map(async (market) => {
+      const productData = await Promise.all(products.map(async (product) => {
+        const prices = await Price.find({
+          product: product._id,
+          market: market._id,
+          isVerified: true
+        }).sort({ date: -1 }).limit(10);
+
+        const avgPrice = prices.length > 0
+          ? prices.reduce((sum, p) => sum + p.price, 0) / prices.length
+          : null;
+
+        const officialPrice = product.price || 0;
+        const difference = avgPrice !== null ? avgPrice - officialPrice : null;
+        const percentDiff = difference !== null && officialPrice > 0
+          ? ((difference / officialPrice) * 100).toFixed(1)
+          : null;
+
+        return {
+          productId: product._id,
+          productName: product.name,
+          category: product.category,
+          unit: product.unit,
+          officialPrice,
+          avgReportedPrice: avgPrice ? Math.round(avgPrice) : null,
+          difference: difference ? Math.round(difference) : null,
+          percentDiff: percentDiff ? parseFloat(percentDiff) : null,
+          reportCount: prices.length,
+          lastReportDate: prices.length > 0 ? prices[0].date : null
+        };
+      }));
+
+      return {
+        marketId: market._id,
+        marketName: market.name,
+        city: market.city,
+        latitude: market.latitude,
+        longitude: market.longitude,
+        products: productData
+      };
+    }));
+
+    res.json({ success: true, mapData });
   } catch (error) {
     next(error);
   }

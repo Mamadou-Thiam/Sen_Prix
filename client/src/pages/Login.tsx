@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Typography, message, Divider } from 'antd';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
+import { MailOutlined, LockOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { authService } from '../services/api';
@@ -121,6 +121,16 @@ const Login: React.FC = () => {
             >
               Créer un compte
             </Button>
+            <div style={{ textAlign: 'center', marginTop: 16 }}>
+              <Button
+                type="link"
+                icon={<EnvironmentOutlined />}
+                onClick={() => navigate('/map')}
+                style={{ fontSize: 14 }}
+              >
+                Voir la carte des prix sans connexion
+              </Button>
+            </div>
           </div>
         </div>
       </div>

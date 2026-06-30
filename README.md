@@ -159,15 +159,9 @@ npm test
 
 ## 🚀 Déploiement
 
-### Render / Heroku
-1. Configurer variables d'environnement
-2. Backend: `npm start`
-3. Frontend: `npm run build`
-
-### AWS EC2
-1. Installer Node.js et MongoDB
-2. Configurer PM2 pour le backend
-3. Serveur Nginx pour le frontend
+1. Configurer les variables d'environnement
+2. Backend: `cd server && npm start`
+3. Frontend: `cd client && npm run build`
 
 ## 📝 License
 

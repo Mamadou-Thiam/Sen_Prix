@@ -7,12 +7,14 @@ const {
   getHistory,
   getPending,
   verifyPrice,
-  getDashboardStats
+  getDashboardStats,
+  getMapData
 } = require('../controllers/priceController');
 const { protect, authorize } = require('../middleware/auth');
 
 router.get('/stats', protect, authorize('admin'), getStats);
 router.get('/dashboard-stats', protect, authorize('admin'), getDashboardStats);
+router.get('/map-data', getMapData);
 
 router.route('/')
   .get(protect, getPrices)
